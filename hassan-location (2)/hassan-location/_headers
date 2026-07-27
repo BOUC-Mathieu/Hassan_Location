@@ -1,0 +1,16 @@
+# ═══════════════════════════════════════════════════
+# HASSAN LOCATION — _headers
+# Cloudflare Pages : en-têtes HTTP de sécurité
+# ═══════════════════════════════════════════════════
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# API : pas de cache, autoriser les appels depuis le frontend
+/api/*
+  Cache-Control: no-store, no-cache
+  X-Content-Type-Options: nosniff

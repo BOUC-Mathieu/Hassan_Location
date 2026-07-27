@@ -1,0 +1,9 @@
+# ═══════════════════════════════════════════════════
+# HASSAN LOCATION — _redirects
+# Cloudflare Pages : règles de redirection
+# ═══════════════════════════════════════════════════
+
+# Sécurité : empêcher l'accès direct aux fichiers sensibles
+/wrangler.toml       /index.html  404
+/schema.sql          /index.html  404
+/.dev.vars           /index.html  404
