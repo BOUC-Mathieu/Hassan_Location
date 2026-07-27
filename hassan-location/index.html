@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Hassan Location – Location camion frigorifique à La Réunion. 180€/jour. Hayon électrique. Température maîtrisée. Réservation en ligne.">
+<title>Hassan Location · Camion Frigorifique – La Réunion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<style>
+/*
+  OVERRIDES index.html
+  1. Logo : background-image crop précis — supprime le blanc du screenshot téléphone
+  2. Fond héro : nouvelle image fournie (Hassan_Location_Back_Template_Cover)
+
+  Analyse pixel logo (470x1020px):
+    Badge bleu : x=34-433 (w=399px, cx=233), y=344-715 (cy=529)
+    Container 320px -> scale=320/399=0.802 -> bg-size:377px 818px -> bg-pos:-27px -264px
+*/
+
+/* — Logo : crop centré sur le badge bleu, zero blanc — */
+.hero__logo-circle {
+  background-image:    url('assets/images/logo.webp');
+  background-size:     377px 818px;
+  background-position: -27px -264px;
+  background-repeat:   no-repeat;
+}
+.hero__logo-img { display: none; }
+
+@media (max-width: 900px) {
+  .hero__logo-circle {
+    background-size:     271px 588px;
+    background-position: -19px -190px;
+  }
+}
+@media (max-width: 640px) {
+  .hero__logo-circle {
+    background-size:     218px 473px;
+    background-position: -15px -153px;
+  }
+}
+
+/* — Fond héro : nouvelle image premium — */
+.hero__bg-photo {
+  background-image:    url('assets/images/hero.webp');
+  background-position: center 22%;
+}
+</style>
+</head>
+<body>
+
+<!-- Particules neige -->
+<canvas id="cv"></canvas>
+
+<!-- ══════ HEADER ══════ -->
+<header class="hdr" id="hdr">
+  <div class="hdr__inner">
+    <div class="hdr__brand">Hassan<span>❄</span>Location</div>
+    <div class="hdr__actions">
+      <a href="tel:0693397792" class="hdr__phone">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 4h3.5l1.5 4-2 1.5a12 12 0 0 0 6.5 6.5l1.5-2 4 1.5V19a2 2 0 0 1-2 2C10 21 3 14 3 6a2 2 0 0 1 2-2z"/></svg>
+        0693 39 77 92
+      </a>
+      <button class="btn btn-cold btn-sm" data-open-booking>Réserver</button>
+    </div>
+  </div>
+</header>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero" id="accueil">
+
+  <!-- Fond photo premium (remplace le SVG dessiné) -->
+  <div class="hero__bg">
+    <div class="hero__bg-photo"></div>
+    <div class="hero__bg-overlay"></div>
+    <div class="hero__bg-cold"></div>
+    <div class="hero__bg-vignette"></div>
+    <div class="hero__bg-top"></div>
+    <div class="hero__bg-bottom"></div>
+  </div>
+
+  <div class="hero__inner">
+
+    <!-- Contenu texte (identique à l'original) -->
+    <div class="hero__content">
+      <div class="hero__badge">❄ Basé à La Réunion · Service local &amp; réactif</div>
+      <h1 class="hero__title">
+        Location camion<br>
+        <em>frigorifique</em>
+        à <span class="hot">La Réunion</span>
+      </h1>
+      <p class="hero__sub">
+        Transportez vos produits en toute sécurité, avec une température
+        parfaitement maîtrisée de -18°C à +4°C. Hayon électrique, disponible maintenant.
+      </p>
+      <div class="hero__ctas">
+        <button class="btn btn-cold btn-lg" data-open-booking>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Réserver maintenant
+        </button>
+        <a href="https://wa.me/262693397792" class="btn btn-ghost" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3zm3.96 12.42c-.22-.11-1.29-.64-1.49-.71-.2-.07-.35-.11-.5.11-.15.22-.57.71-.7.86-.13.14-.26.16-.48.05-.22-.11-.93-.34-1.77-1.09-.65-.58-1.09-1.3-1.22-1.52-.13-.22-.01-.34.1-.45.1-.1.22-.26.33-.39.11-.13.15-.22.22-.37.07-.15.04-.28-.02-.39-.06-.11-.5-1.2-.68-1.64-.18-.43-.36-.37-.5-.38h-.42c-.15 0-.39.06-.59.28s-.77.75-.77 1.83c0 1.08.79 2.12.9 2.27.11.15 1.55 2.37 3.76 3.32.52.23.93.36 1.25.46.52.17 1 .14 1.37.09.42-.06 1.29-.53 1.47-1.04.18-.51.18-.95.13-1.04-.05-.1-.2-.16-.42-.27z"/></svg>
+          WhatsApp
+        </a>
+      </div>
+      <div class="hero__kpis">
+        <div class="hero__kpi"><strong>180€</strong><span>par jour</span></div>
+        <div class="hero__kpi"><strong>-18°C</strong><span>à +4°C</span></div>
+        <div class="hero__kpi"><strong>24h</strong><span>Réponse rapide</span></div>
+      </div>
+    </div>
+
+    <!-- Logo (remplace le camion SVG animé) -->
+    <div class="hero__visual">
+      <div class="hero__logo-wrap">
+        <div class="hero__logo-glow"></div>
+        <div class="hero__logo-circle" role="img" aria-label="Hassan Location – Logo camion frigorifique La Réunion"></div>
+        <div class="hero__logo-shadow"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════ AVANTAGES ══════ -->
+<section class="sec" id="avantages">
+  <div class="sec__inner">
+    <div class="sec__head reveal">
+      <div class="sec__label">Pourquoi Hassan Location</div>
+      <h2 class="sec__title">La chaîne du froid,<br>sans compromis</h2>
+      <p class="sec__sub">Un service local, réactif et fiable pour transporter vos marchandises sur toute l'île.</p>
+    </div>
+    <div class="av-grid">
+      <div class="av-card reveal d1">
+        <div class="av-card__icon">❄️</div>
+        <div class="av-card__name">Température maîtrisée</div>
+        <p class="av-card__text">Maintien garanti de -18°C à +4°C grâce à une unité frigorifique puissante et régulièrement entretenue. Vos produits arrivent dans un état parfait.</p>
+      </div>
+      <div class="av-card reveal d2">
+        <div class="av-card__icon">⚡</div>
+        <div class="av-card__name">Hayon électrique</div>
+        <p class="av-card__text">Chargement et déchargement facilités par un hayon à commande électrique. Idéal pour les livraisons sans quai de déchargement.</p>
+      </div>
+      <div class="av-card reveal d3">
+        <div class="av-card__icon">🛡️</div>
+        <div class="av-card__name">Fiabilité garantie</div>
+        <p class="av-card__text">Véhicule entretenu et contrôlé avant chaque location. Assistance disponible en cas d'imprévu. Vous n'êtes jamais seul sur la route.</p>
+      </div>
+      <div class="av-card reveal d4">
+        <div class="av-card__icon">💳</div>
+        <div class="av-card__name">Paiement flexible</div>
+        <p class="av-card__text">Acompte de 30% à la réservation, solde à la prise en charge. Paiement en 3 ou 4 fois sans frais possible sur demande.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════ PRODUIT ══════ -->
+<section class="sec sec--alt" id="produit">
+  <div class="sec__inner">
+    <div class="sec__head reveal">
+      <div class="sec__label">Notre véhicule</div>
+      <h2 class="sec__title">Un camion, une mission :<br>votre chaîne du froid</h2>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-card__img">
+        <img src="assets/images/truck.webp" alt="Notre camion frigorifique Renault – Hassan Location La Réunion">
+      </div>
+      <div class="product-card__body">
+        <div class="product-tag">Disponible à la réservation</div>
+        <div class="product-name">Camion Frigorifique avec Hayon</div>
+        <div class="product-specs">
+          <div class="spec"><div class="spec__ic">❄️</div>Froid : -18°C à +4°C</div>
+          <div class="spec"><div class="spec__ic">⚡</div>Hayon électrique</div>
+          <div class="spec"><div class="spec__ic">📦</div>Grand volume de chargement</div>
+          <div class="spec"><div class="spec__ic">🔧</div>Entretien régulier garanti</div>
+          <div class="spec"><div class="spec__ic">🏝️</div>Livraison possible La Réunion</div>
+          <div class="spec"><div class="spec__ic">👥</div>Professionnels &amp; particuliers</div>
+        </div>
+        <div class="product-price-row">
+          <div class="price-big">180€</div>
+          <div class="price-unit">/ jour</div>
+          <div class="price-note">
+            Tarif dégressif<br>
+            4–7 j : 165€/j · 8j+ : 150€/j<br>
+            Payable en 3/4× sans frais
+          </div>
+        </div>
+        <button class="btn btn-cold btn-full" data-open-booking>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Réserver ce véhicule
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════ CTA RÉSERVATION ══════ -->
+<section class="cta-booking" id="reservation">
+  <div class="cta-booking__card reveal">
+    <div class="sec__label">Réservation en ligne</div>
+    <h2 class="cta-booking__title">Prêt à réserver ?</h2>
+    <p class="cta-booking__sub">Choisissez vos dates, réglez en ligne, et recevez votre contrat à signer. Simple, rapide, sécurisé.</p>
+    <div class="cta-booking__prices">
+      <div class="cta-price">
+        <strong>180€</strong>
+        <span>1 à 3 jours</span>
+      </div>
+      <div class="cta-price">
+        <strong>165€</strong>
+        <span>4 à 7 jours</span>
+        <span class="badge-green">-8%</span>
+      </div>
+      <div class="cta-price">
+        <strong>150€</strong>
+        <span>8 jours et +</span>
+        <span class="badge-green">-17%</span>
+      </div>
+    </div>
+    <button class="btn btn-cold btn-lg" data-open-booking>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Choisir mes dates
+    </button>
+  </div>
+</section>
+
+<!-- ══════ FOOTER ══════ -->
+<footer class="footer">
+  <div class="footer__logo">Hassan❄Location</div>
+  <div class="footer__tag">Location de camion frigorifique à La Réunion · Service local, réactif et de confiance</div>
+  <div class="footer__links">
+    <a href="tel:0693397792" class="footer__link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 4h3.5l1.5 4-2 1.5a12 12 0 0 0 6.5 6.5l1.5-2 4 1.5V19a2 2 0 0 1-2 2C10 21 3 14 3 6a2 2 0 0 1 2-2z"/></svg>
+      0693 39 77 92
+    </a>
+    <a href="https://wa.me/262693397792" class="footer__link" target="_blank" rel="noopener">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z"/></svg>
+      WhatsApp
+    </a>
+    <span class="footer__link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Le Tampon, La Réunion
+    </span>
+  </div>
+  <div class="footer__copy">© 2025 Hassan Location · Tous droits réservés · La Réunion (974)</div>
+</footer>
+
+<!-- Bouton WhatsApp flottant -->
+<a href="https://wa.me/262693397792" class="wa-fab" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3zm3.96 12.42c-.22-.11-1.29-.64-1.49-.71-.2-.07-.35-.11-.5.11-.15.22-.57.71-.7.86-.13.14-.26.16-.48.05-.22-.11-.93-.34-1.77-1.09-.65-.58-1.09-1.3-1.22-1.52-.13-.22-.01-.34.1-.45.1-.1.22-.26.33-.39.11-.13.15-.22.22-.37.07-.15.04-.28-.02-.39-.06-.11-.5-1.2-.68-1.64-.18-.43-.36-.37-.5-.38h-.42c-.15 0-.39.06-.59.28s-.77.75-.77 1.83c0 1.08.79 2.12.9 2.27.11.15 1.55 2.37 3.76 3.32.52.23.93.36 1.25.46.52.17 1 .14 1.37.09.42-.06 1.29-.53 1.47-1.04.18-.51.18-.95.13-1.04-.05-.1-.2-.16-.42-.27z"/></svg>
+</a>
+
+<!-- ══════ MODAL RÉSERVATION ══════ -->
+<div class="bk-overlay" id="bk-overlay" role="dialog" aria-modal="true" aria-label="Réservation">
+  <div class="bk-modal">
+
+    <button class="bk-close" id="bk-close" aria-label="Fermer">✕</button>
+
+    <!-- Indicateur de progression -->
+    <div class="bk-progress">
+      <div class="bk-step-wrap active" id="bk-wrap-1">
+        <div class="bk-dot active" id="bk-dot-1">1</div>
+        <span class="bk-dot-label">Dates</span>
+      </div>
+      <div class="bk-step-line" id="bk-line-1"></div>
+      <div class="bk-step-wrap" id="bk-wrap-2">
+        <div class="bk-dot" id="bk-dot-2">2</div>
+        <span class="bk-dot-label">Paiement</span>
+      </div>
+      <div class="bk-step-line" id="bk-line-2"></div>
+      <div class="bk-step-wrap" id="bk-wrap-3">
+        <div class="bk-dot" id="bk-dot-3">3</div>
+        <span class="bk-dot-label">Confirmation</span>
+      </div>
+    </div>
+
+    <!-- ── ÉTAPE 1 : CALENDRIER ── -->
+    <div class="bk-panel active" id="bk-panel-1">
+      <h2 class="bk-panel-title">Choisissez vos dates</h2>
+      <p class="bk-panel-sub">Cliquez sur la date de début, puis la date de fin de votre location.</p>
+
+      <div class="cal-wrap">
+        <div class="cal-nav-row">
+          <button class="cal-nav-btn" id="cal-prev" aria-label="Mois précédent">‹</button>
+          <div class="cal-months-grid" id="cal-grid"></div>
+          <button class="cal-nav-btn" id="cal-next" aria-label="Mois suivant">›</button>
+        </div>
+
+        <p id="cal-error" style="display:none;color:#ff6060;font-size:.83rem;padding:10px 14px;background:rgba(255,60,60,.08);border:1px solid rgba(255,60,60,.2);border-radius:10px;margin-bottom:12px;"></p>
+
+        <!-- Récapitulatif prix -->
+        <div class="cal-summary" id="cal-summary">
+          <div class="cal-sum-row">
+            <span>Dates</span>
+            <span id="cs-dates">—</span>
+          </div>
+          <div class="cal-sum-row">
+            <span>Durée</span>
+            <span id="cs-days">—</span>
+          </div>
+          <div class="cal-sum-row">
+            <span>Tarif / jour</span>
+            <span><span id="cs-rate">—</span> <span id="cs-badge" class="badge-discount" style="display:none"></span></span>
+          </div>
+          <div class="cal-sum-row total">
+            <span>Total TTC</span>
+            <span class="val" id="cs-total">—</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-cold btn-full" id="bk-btn-next-1" disabled>
+        Choisir mon paiement →
+      </button>
+    </div>
+
+    <!-- ── ÉTAPE 2 : PAIEMENT ── -->
+    <div class="bk-panel" id="bk-panel-2">
+      <h2 class="bk-panel-title">Option de paiement</h2>
+      <p class="bk-panel-sub">Choisissez entre l'acompte ou le règlement intégral.</p>
+
+      <div class="pay-opts">
+        <button class="pay-card" id="pay-card-deposit" onclick="selectPayOption('deposit')">
+          <div class="pay-card__label">Acompte 30%</div>
+          <div class="pay-card__amount" id="pay-deposit-amt">—</div>
+          <div class="pay-card__note" id="pay-deposit-note">Solde à la remise des clés</div>
+        </button>
+        <button class="pay-card" id="pay-card-full" onclick="selectPayOption('full')">
+          <div class="pay-card__label">Paiement total</div>
+          <div class="pay-card__amount" id="pay-full-amt">—</div>
+          <div class="pay-card__note" id="pay-full-note">Réservation immédiate</div>
+        </button>
+      </div>
+
+      <div class="pay-recap" id="pay-recap"></div>
+
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4dd87a" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span style="font-size:.78rem;color:rgba(185,225,255,.5);">Paiement 100% sécurisé par <strong style="color:#fff;">Stripe</strong></span>
+      </div>
+
+      <button class="btn btn-cold btn-full" id="bk-btn-pay" disabled>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Procéder au paiement sécurisé →
+      </button>
+    </div>
+
+    <!-- ── ÉTAPE 3 : STRIPE REDIRECT ── -->
+    <div class="bk-panel" id="bk-panel-3">
+      <p id="stripe-error-msg" style="display:none;color:#ff6060;font-size:.88rem;text-align:center;padding:14px;background:rgba(255,60,60,.08);border:1px solid rgba(255,60,60,.2);border-radius:10px;margin-bottom:16px;"></p>
+      <div class="stripe-step">
+        <div class="stripe-loader"></div>
+        <p style="color:var(--white);font-weight:600;font-size:1.05rem;">Redirection vers le paiement…</p>
+        <p>Vous allez être redirigé vers notre page de paiement sécurisée.</p>
+        <div class="secure-badge">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Paiement sécurisé par Stripe — Données chiffrées SSL
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="js/config.js"></script>
+<script src="js/booking.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
