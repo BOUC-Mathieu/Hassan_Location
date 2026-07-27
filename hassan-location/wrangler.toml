@@ -24,6 +24,6 @@ database_id   = "3500a038-c2b1-42c9-82b5-c050835c1f51"
 # ─── Variables d'environnement (locales uniquement — NE PAS committer les clés réelles) ───
 # En production : configurer via Dashboard Cloudflare Pages → Settings → Variables
 [vars]
-SITE_URL              = "http://localhost:8788"
+SITE_URL              = "https://hassan-location.pages.dev"
 # STRIPE_SECRET_KEY   = "sk_test_..."   # à définir via .dev.vars (git-ignoré)
 # STRIPE_WEBHOOK_SECRET = "whsec_..."   # à définir via .dev.vars (git-ignoré)
