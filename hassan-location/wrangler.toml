@@ -19,7 +19,7 @@ pages_build_output_dir = "."
 [[d1_databases]]
 binding     = "DB"
 database_name = "hassan-location-db"
-database_id   = "REMPLACER-PAR-VOTRE-DATABASE-ID"
+database_id   = "3500a038-c2b1-42c9-82b5-c050835c1f51"
 
 # ─── Variables d'environnement (locales uniquement — NE PAS committer les clés réelles) ───
 # En production : configurer via Dashboard Cloudflare Pages → Settings → Variables
