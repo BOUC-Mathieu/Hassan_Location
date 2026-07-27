@@ -21,17 +21,29 @@ export async function onRequestGet({ request, env }) {
   }
 
   /* 1. Chercher dans D1 */
-  try {
-    const row = await env.DB.prepare(
-      'SELECT * FROM reservations WHERE stripe_session_id = ?'
-    ).bind(sessionId).first();
+  if (!env.DB) {
+    console.error(
+      '[reservation] CONFIG MANQUANTE : le binding D1 "DB" est introuvable ' +
+      '(Cloudflare Pages → Settings → Bindings → D1 database bindings). ' +
+      'Bascule sur le fallback Stripe ci-dessous.'
+    );
+  } else {
+    try {
+      const row = await env.DB.prepare(
+        'SELECT * FROM reservations WHERE stripe_session_id = ?'
+      ).bind(sessionId).first();
 
-    if (row) {
-      return Response.json({ ok: true, reservation: row, source: 'db' }, { headers: h });
+      if (row) {
+        return Response.json({ ok: true, reservation: row, source: 'db' }, { headers: h });
+      }
+    } catch (err) {
+      console.error(
+        '[reservation] D1 error:', err.message,
+        '— si le message contient "no such table", le schéma n\'a pas été appliqué ' +
+        'à la base DISTANTE : wrangler d1 execute hassan-location-db --file=schema.sql --remote'
+      );
+      // On continue vers le fallback Stripe
     }
-  } catch (err) {
-    console.error('[reservation] D1 error:', err);
-    // On continue vers le fallback Stripe
   }
 
   /* 2. Fallback Stripe — webhook probablement en transit */

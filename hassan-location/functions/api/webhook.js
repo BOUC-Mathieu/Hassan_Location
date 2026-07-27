@@ -80,6 +80,19 @@ export async function onRequestPost({ request, env }) {
 
   const now = new Date().toISOString();
 
+  // ─── Vérification config : binding D1 "DB" ─────────────────────
+  // Sans ce binding, aucune réservation ne peut être enregistrée : Stripe
+  // recevra un 500 et retentera l'envoi (retry automatique), mais rien ne
+  // sera écrit tant que le binding n'est pas configuré côté Cloudflare.
+  if (!env.DB) {
+    console.error(
+      '[webhook] CONFIG MANQUANTE : le binding D1 "DB" est introuvable — ' +
+      `événement ${event.type} NON enregistré. À corriger dans Cloudflare Pages → ` +
+      'Settings → Bindings → D1 database bindings (variable name = DB).'
+    );
+    return new Response('Internal error', { status: 500 });
+  }
+
   try {
     switch (event.type) {
 
@@ -150,7 +163,11 @@ export async function onRequestPost({ request, env }) {
         break;
     }
   } catch (err) {
-    console.error('[webhook] Erreur handler:', err);
+    console.error(
+      '[webhook] Erreur handler:', err.message,
+      '— si le message contient "no such table", le schéma n\'a pas été appliqué ' +
+      'à la base DISTANTE : wrangler d1 execute hassan-location-db --file=schema.sql --remote'
+    );
     return new Response('Internal error', { status: 500 });
   }
 

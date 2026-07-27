@@ -121,6 +121,19 @@ export async function onRequestPost({ request, env }) {
   }
 
   /* 4. Vérifier la disponibilité dans D1 */
+
+  // ─── Vérification config : binding D1 "DB" ─────────────────────
+  // Si absent, env.DB est `undefined` : on le détecte avant d'appeler
+  // checkAvailability() pour logger un message exploitable.
+  if (!env.DB) {
+    console.error(
+      '[checkout] CONFIG MANQUANTE : le binding D1 "DB" est introuvable. ' +
+      'À corriger dans Cloudflare Pages → Settings → Bindings → D1 database bindings ' +
+      '(variable name = DB, database = hassan-location-db).'
+    );
+    return Response.json({ error: 'Erreur lors de la vérification de disponibilité' }, { status: 500, headers: h });
+  }
+
   try {
     const available = await checkAvailability(env.DB, startDate, endDate);
     if (!available) {
@@ -130,7 +143,11 @@ export async function onRequestPost({ request, env }) {
       );
     }
   } catch (err) {
-    console.error('[checkout] D1 error:', err);
+    console.error(
+      '[checkout] D1 error:', err.message,
+      '— si le message contient "no such table", le schéma n\'a pas été appliqué ' +
+      'à la base DISTANTE : wrangler d1 execute hassan-location-db --file=schema.sql --remote'
+    );
     return Response.json({ error: 'Erreur lors de la vérification de disponibilité' }, { status: 500, headers: h });
   }
 
@@ -139,6 +156,17 @@ export async function onRequestPost({ request, env }) {
   const chargedCents = charged * 100; // Stripe attend des centimes
 
   /* 6. Créer la session Stripe */
+
+  // ─── Vérification config : variable STRIPE_SECRET_KEY ──────────
+  if (!env.STRIPE_SECRET_KEY) {
+    console.error(
+      '[checkout] CONFIG MANQUANTE : la variable d\'environnement STRIPE_SECRET_KEY ' +
+      'est introuvable. À ajouter (chiffrée) dans Cloudflare Pages → Settings → ' +
+      'Environment variables → Production.'
+    );
+    return Response.json({ error: 'Erreur lors de la création du paiement. Réessayez.' }, { status: 500, headers: h });
+  }
+
   const siteUrl = env.SITE_URL || 'https://hassan-location.pages.dev';
   const description = `${days} jour(s) · Du ${startDate} au ${endDate} · ${label} · ${
     paymentOption === 'deposit' ? `Acompte 30% (${deposit}€)` : `Paiement intégral (${total}€)`
