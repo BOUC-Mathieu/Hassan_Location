@@ -1,0 +1,29 @@
+# ═══════════════════════════════════════════════════════════════════
+# HASSAN LOCATION — wrangler.toml
+# Configuration pour le développement local uniquement.
+#
+# En production, les bindings D1 et les variables d'environnement
+# sont configurés dans le Dashboard Cloudflare Pages.
+#
+# Démarrer en local :
+#   npx wrangler pages dev . --d1=DB
+# ═══════════════════════════════════════════════════════════════════
+
+name = "hassan-location"
+compatibility_date = "2024-09-23"
+pages_build_output_dir = "."
+
+# ─── Base de données D1 ───
+# Remplacer database_id par l'ID réel après :
+#   wrangler d1 create hassan-location-db
+[[d1_databases]]
+binding     = "DB"
+database_name = "hassan-location-db"
+database_id   = "REMPLACER-PAR-VOTRE-DATABASE-ID"
+
+# ─── Variables d'environnement (locales uniquement — NE PAS committer les clés réelles) ───
+# En production : configurer via Dashboard Cloudflare Pages → Settings → Variables
+[vars]
+SITE_URL              = "http://localhost:8788"
+# STRIPE_SECRET_KEY   = "sk_test_..."   # à définir via .dev.vars (git-ignoré)
+# STRIPE_WEBHOOK_SECRET = "whsec_..."   # à définir via .dev.vars (git-ignoré)

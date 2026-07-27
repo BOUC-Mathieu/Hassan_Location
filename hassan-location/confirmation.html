@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paiement confirmé – Hassan Location</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<canvas id="cv"></canvas>
+
+<header class="hdr" id="hdr">
+  <div class="hdr__inner">
+    <a href="index.html" class="hdr__brand">Hassan<span>❄</span>Location</a>
+    <div class="hdr__actions">
+      <a href="tel:0693397792" class="hdr__phone">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 4h3.5l1.5 4-2 1.5a12 12 0 0 0 6.5 6.5l1.5-2 4 1.5V19a2 2 0 0 1-2 2C10 21 3 14 3 6a2 2 0 0 1 2-2z"/></svg>
+        0693 39 77 92
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="confirm-hero">
+  <div class="confirm-card" id="confirm-card">
+
+    <!-- État : chargement -->
+    <div id="state-loading" style="text-align:center;padding:20px 0;">
+      <div class="stripe-loader" style="margin:0 auto 16px;"></div>
+      <p style="color:var(--muted);">Vérification du paiement…</p>
+    </div>
+
+    <!-- État : succès (masqué par défaut) -->
+    <div id="state-success" style="display:none;">
+      <div class="confirm-icon">✓</div>
+      <h1 class="confirm-title">Paiement confirmé !</h1>
+      <p class="confirm-sub">Merci pour votre réservation. Votre demande a bien été enregistrée.</p>
+      <p class="confirm-ref">Référence : <span id="res-id">—</span></p>
+
+      <div class="confirm-steps" id="res-recap" style="margin-bottom:24px;">
+        <div class="confirm-step">
+          <div class="cs-num">📅</div>
+          <span id="res-dates">—</span>
+        </div>
+        <div class="confirm-step">
+          <div class="cs-num">💰</div>
+          <span id="res-amount">—</span>
+        </div>
+      </div>
+
+      <div class="confirm-steps" style="margin-bottom:28px;">
+        <div class="confirm-step">
+          <div class="cs-num">1</div>
+          <div>
+            <span>Signez le contrat de location</span><br>
+            <small style="color:var(--muted);font-size:.78rem;">Obligatoire — réservation <em>en attente</em> jusqu'à réception</small>
+          </div>
+        </div>
+        <div class="confirm-step">
+          <div class="cs-num">2</div>
+          <div>
+            <span>Envoyez-le par WhatsApp ou email</span><br>
+            <small style="color:var(--muted);font-size:.78rem;">Avec permis de conduire et pièce d'identité</small>
+          </div>
+        </div>
+        <div class="confirm-step">
+          <div class="cs-num">3</div>
+          <div>
+            <span>Validation par Hassan Location</span><br>
+            <small style="color:var(--muted);font-size:.78rem;">Confirmation définitive sous 24h ouvrées</small>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <a href="contrat.html" class="btn btn-cold btn-full btn-lg">Accéder au contrat de location →</a>
+        <a href="index.html"   class="btn btn-outline-white btn-full">Retour à l'accueil</a>
+      </div>
+    </div>
+
+    <!-- État : erreur (masqué par défaut) -->
+    <div id="state-error" style="display:none;text-align:center;">
+      <div style="font-size:2.5rem;margin-bottom:16px;">⚠️</div>
+      <h2 style="color:var(--white);margin-bottom:10px;">Session introuvable</h2>
+      <p style="color:var(--muted);margin-bottom:24px;">Votre paiement a peut-être été effectué mais la session a expiré ou est introuvable. Contactez-nous.</p>
+      <a href="https://wa.me/262693397792" class="btn btn-wa btn-full" target="_blank" rel="noopener">Contacter par WhatsApp</a>
+      <a href="index.html" class="btn btn-outline-white btn-full" style="margin-top:10px;">Retour à l'accueil</a>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer" style="padding:28px 22px;">
+  <div class="footer__copy" style="margin:0;">© 2025 Hassan Location · La Réunion (974)</div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+(function () {
+  var params    = new URLSearchParams(window.location.search);
+  var sessionId = params.get('session_id');
+
+  function fmt(s) {
+    if (!s) return '—';
+    return new Date(s + 'T12:00:00').toLocaleDateString('fr-FR',
+      { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  }
+
+  function showSuccess(r) {
+    document.getElementById('state-loading').style.display = 'none';
+    document.getElementById('state-success').style.display = '';
+
+    var refEl = document.getElementById('res-id');
+    if (refEl) refEl.textContent = r.id || ('HL-' + String(Date.now()).slice(-6));
+
+    var dEl = document.getElementById('res-dates');
+    if (dEl) dEl.textContent = 'Du ' + fmt(r.start_date) + ' au ' + fmt(r.end_date) +
+      ' (' + r.days + ' jour' + (r.days > 1 ? 's' : '') + ')';
+
+    var aEl = document.getElementById('res-amount');
+    if (aEl) {
+      var payLabel = r.payment_option === 'deposit'
+        ? 'Acompte 30% payé : ' + r.amount_paid + '€ · Solde : ' + (r.total_amount - r.amount_paid) + '€ à la remise des clés'
+        : 'Paiement intégral : ' + r.amount_paid + '€';
+      aEl.textContent = payLabel;
+    }
+
+    // Stocker pour la page contrat
+    localStorage.setItem('hl_last_reservation', JSON.stringify(r));
+  }
+
+  function showError() {
+    document.getElementById('state-loading').style.display = 'none';
+    document.getElementById('state-error').style.display   = '';
+  }
+
+  async function loadReservation() {
+    if (!sessionId) {
+      // Pas de session_id : chercher en sessionStorage (retour imprévu)
+      try {
+        var raw = sessionStorage.getItem('hl_pending');
+        if (raw) { var d = JSON.parse(raw); showSuccess({ start_date:d.startDate, end_date:d.endDate, days:d.days, total_amount:d.total, amount_paid:d.total, payment_option:d.option, id:null }); return; }
+      } catch(e) {}
+      showError(); return;
+    }
+
+    // Appel à /api/reservation avec retry (webhook peut prendre quelques secondes)
+    var attempts = 0;
+    var MAX      = 4;
+    var DELAY    = 1500;
+
+    async function attempt() {
+      attempts++;
+      try {
+        var res  = await fetch('/api/reservation?session_id=' + encodeURIComponent(sessionId));
+        var data = await res.json();
+        if (res.ok && data.ok && data.reservation) {
+          showSuccess(data.reservation); return;
+        }
+        if (res.status === 402 || res.status === 404) { showError(); return; }
+      } catch(e) {}
+
+      if (attempts < MAX) {
+        setTimeout(attempt, DELAY);
+      } else {
+        // Dernière tentative échouée : afficher quand même le succès avec info minimale
+        showSuccess({ start_date: '?', end_date: '?', days: 0, total_amount: 0, amount_paid: 0, payment_option: 'full', id: null });
+      }
+    }
+
+    attempt();
+  }
+
+  loadReservation();
+})();
+</script>
+</body>
+</html>
