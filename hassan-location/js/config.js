@@ -20,7 +20,7 @@ window.SITE_CONFIG = (function () {
   var EMAIL         = 'contact@hassan-location.re';
 
   /* ─── Stripe (clé PUBLIQUE uniquement — pk_live_ ou pk_test_) ─ */
-  var STRIPE_PUBLIC_KEY = 'pk_live_REMPLACER_PAR_VOTRE_CLE_PUBLIQUE';
+  var STRIPE_PUBLIC_KEY = 'pk_test_51TxKygQ4OOddmt1dysPugPio1SBmdaIiCRHDx0KOaDfZi4lNEmlNSu6JgQj4iR5UisnNCPUSeibPK6vEleztKA3600WiwVXqpu';
 
   /* ─── Tarification ─────────────────────────────────────────── */
   /* DOIT correspondre à la fonction calcAmounts() dans           */
