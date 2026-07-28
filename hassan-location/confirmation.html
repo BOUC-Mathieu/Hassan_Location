@@ -100,8 +100,13 @@
 <script src="js/main.js"></script>
 <script>
 (function () {
+  // Protection accès direct : seule une redirection Stripe est autorisée
   var params    = new URLSearchParams(window.location.search);
   var sessionId = params.get('session_id');
+  if (!sessionId && !sessionStorage.getItem('hl_pending')) {
+    window.location.replace('index.html');
+    return;
+  }
 
   function fmt(s) {
     if (!s) return '—';

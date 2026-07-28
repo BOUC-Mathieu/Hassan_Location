@@ -15,8 +15,8 @@
     body { background: #fff; color: #111; padding: 0; }
     .contrat-body { background: #fff; border: none; box-shadow: none; color: #111; }
     .contrat-body h3 { color: #0066aa; }
-    .contrat-body p  { color: #222; }
-    .contrat-page    { padding: 20px; }
+    .contrat-body p, .contrat-body li { color: #222; }
+    .contrat-page { padding: 20px; }
   }
 </style>
 </head>
@@ -41,10 +41,10 @@
   <div class="contrat-header">
     <div class="sec__label">Document officiel</div>
     <h1 class="sec__title">Contrat de location</h1>
-    <p style="color:var(--muted);font-size:.92rem;margin-top:8px;">Hassan Location · Camion Frigorifique avec Hayon · La Réunion</p>
+    <p style="color:var(--muted);font-size:.92rem;margin-top:8px;">Hassan Location · Camion Frigorifique Renault Maxity · La Réunion</p>
   </div>
 
-  <!-- ════ ENCART D'AVERTISSEMENT TRÈS VISIBLE ════ -->
+  <!-- ════ ENCART AVERTISSEMENT ════ -->
   <div class="contrat-alert">
     <span class="contrat-alert__icon">⚠️</span>
     <div class="contrat-alert__title">
@@ -53,146 +53,227 @@
     </div>
     <p style="color:rgba(220,180,120,.9);font-size:.88rem;margin-bottom:12px;">
       Votre paiement a bien été enregistré. Cependant, votre réservation restera
-      <strong style="color:#ffb340;">EN ATTENTE</strong> tant que nous n'avons pas reçu votre contrat signé
-      accompagné de vos documents.
+      <strong style="color:#ffb340;">EN ATTENTE</strong> tant que nous n'avons pas reçu votre contrat signé accompagné de vos documents.
     </p>
     <ul class="contrat-alert__steps">
       <li>Lisez attentivement le contrat ci-dessous</li>
       <li>Imprimez-le ou téléchargez-le en PDF</li>
-      <li>Signez-le (papier ou signature électronique)</li>
+      <li>Signez-le avec la mention manuscrite requise</li>
       <li>Envoyez-le avec votre permis de conduire et pièce d'identité</li>
     </ul>
-
     <div class="contrat-actions">
-      <a id="wa-contract-btn" href="#" class="btn btn-wa" target="_blank" rel="noopener">
+      <a id="wa-contract-btn" href="https://wa.me/262693397792" class="btn btn-wa" target="_blank" rel="noopener">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z"/></svg>
         Envoyer par WhatsApp
       </a>
-      <a href="mailto:contact@hassan-location.re?subject=Contrat%20de%20location%20signé&body=Bonjour%2C%20veuillez%20trouver%20ci-joint%20mon%20contrat%20de%20location%20signé." class="btn btn-email">
+      <a id="email-contract-btn" href="mailto:Lallemandjoan150@gmail.com?subject=Contrat%20de%20location%20signé" class="btn btn-email">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
         Envoyer par Email
       </a>
-      <button class="btn btn-pdf" onclick="downloadPDF()">
+      <button class="btn btn-pdf" onclick="window.print()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-        Télécharger PDF
-      </button>
-      <button class="btn btn-outline-white" id="print-btn" onclick="window.print()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-        Imprimer
+        Télécharger / Imprimer PDF
       </button>
     </div>
   </div>
 
-  <!-- ════ CORPS DU CONTRAT ════ -->
+  <!-- ════ CORPS DU CONTRAT OFFICIEL ════ -->
   <div class="contrat-body" id="contrat-body">
 
-    <!-- En-tête du contrat -->
+    <!-- En-tête officiel -->
     <div style="text-align:center;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid rgba(0,198,240,.15);">
-      <div style="font-family:var(--font-head);font-weight:900;font-size:1.3rem;color:var(--white);margin-bottom:4px;">CONTRAT DE LOCATION DE VÉHICULE FRIGORIFIQUE</div>
-      <div style="color:var(--cold);font-size:.85rem;font-weight:600;">Hassan Location · La Réunion · 0693 39 77 92</div>
+      <div style="font-family:var(--font-head);font-weight:900;font-size:1.4rem;color:var(--white);margin-bottom:6px;letter-spacing:-.01em;">CONTRAT DE LOCATION DE VÉHICULE FRIGORIFIQUE</div>
+      <div style="color:var(--cold);font-size:.85rem;font-weight:600;margin-top:6px;">Contrat N° : <span id="contrat-num">…………..</span></div>
     </div>
 
-    <!-- Informations de la réservation (remplies dynamiquement) -->
+    <!-- Infos réservation (remplies dynamiquement) -->
     <div id="contrat-reservation-info" style="margin-bottom:24px;"></div>
 
-    <h3>Article 1 – Parties au contrat</h3>
-    <p><strong style="color:var(--white);">Le Loueur :</strong> Hassan Location, prestataire indépendant basé à La Réunion, ci-après dénommé « le Loueur ».</p>
-    <p><strong style="color:var(--white);">Le Locataire :</strong> Toute personne physique ou morale ayant effectué une réservation en ligne, ci-après dénommée « le Locataire ».</p>
-
-    <h3>Article 2 – Objet du contrat</h3>
-    <p>Le présent contrat régit la mise à disposition par le Loueur d'un camion frigorifique équipé d'un hayon électrique au profit du Locataire, pour une utilisation exclusive sur le territoire de La Réunion. Le Locataire reconnaît avoir pris connaissance des caractéristiques du véhicule avant toute réservation.</p>
-
-    <h3>Article 3 – Durée et tarification</h3>
-    <div class="contrat-info-row"><span class="ci-label">Tarif 1 à 3 jours :</span><span class="ci-val">180 € TTC / jour</span></div>
-    <div class="contrat-info-row"><span class="ci-label">Tarif 4 à 7 jours :</span><span class="ci-val">165 € TTC / jour</span></div>
-    <div class="contrat-info-row"><span class="ci-label">Tarif 8 jours et + :</span><span class="ci-val">150 € TTC / jour</span></div>
-    <p>La journée entamée est intégralement due. La durée de location est celle convenue lors de la réservation. Tout retard non signalé est facturé à la journée supplémentaire au tarif plein.</p>
-
-    <h3>Article 4 – Paiement et acompte</h3>
-    <p>Un acompte de 30 % du montant total est prélevé en ligne lors de la réservation via notre partenaire de paiement sécurisé Stripe. Le solde est exigible le jour de la remise des clés, avant toute prise en charge du véhicule. Modalités de paiement acceptées pour le solde : espèces, virement bancaire, chèque de banque certifié.</p>
-    <p>Paiement en 3 ou 4 fois sans frais disponible sur demande expresse avant réservation.</p>
-
-    <h3>Article 5 – Caution</h3>
-    <div class="contrat-info-row"><span class="ci-label">Montant :</span><span class="ci-val">500 € par chèque non encaissé</span></div>
-    <p>Une caution de 500 € par chèque non encaissé est obligatoirement remise au Loueur lors de la prise en charge du véhicule. Ce chèque sera restitué sans délai après vérification complète du véhicule, de ses équipements frigorifiques et du niveau de carburant, et en l'absence de tout dommage, manquant ou sinistre.</p>
-
-    <h3>Article 6 – Carburant</h3>
-    <p>Le véhicule est remis au Locataire avec le réservoir plein de carburant. Le Locataire s'engage à le restituer dans le même état. À défaut, le carburant manquant sera facturé au prix affiché à la pompe le jour de la restitution, majoré de 25 € de frais de remise à niveau.</p>
-
-    <h3>Article 7 – Conditions de conduite</h3>
-    <div class="contrat-info-row"><span class="ci-label">Permis requis :</span><span class="ci-val">Catégorie C ou C1 selon PTAC</span></div>
-    <div class="contrat-info-row"><span class="ci-label">Âge minimum :</span><span class="ci-val">23 ans révolus</span></div>
-    <div class="contrat-info-row"><span class="ci-label">Ancienneté permis :</span><span class="ci-val">2 ans minimum</span></div>
-    <p>Le conducteur doit être titulaire d'un permis de conduire valide en cours de validité. Toute infraction au Code de la route, amende ou contravention survenant pendant la période de location reste à la charge exclusive du Locataire.</p>
-
-    <h3>Article 8 – Usage autorisé du véhicule</h3>
-    <p>Le véhicule est mis à disposition exclusivement pour le transport de marchandises légales nécessitant une chaîne du froid, sur le territoire de La Réunion uniquement. Il est formellement interdit de :</p>
-    <ul style="list-style:none;padding-left:0;">
-      <li style="padding:3px 0;color:var(--muted);">— Transporter des substances illicites, dangereuses ou réglementées sans autorisation</li>
-      <li style="padding:3px 0;color:var(--muted);">— Faire conduire le véhicule par une personne non déclarée au contrat</li>
-      <li style="padding:3px 0;color:var(--muted);">— Quitter le territoire de La Réunion avec le véhicule</li>
-      <li style="padding:3px 0;color:var(--muted);">— Utiliser le véhicule à des fins de compétition ou de démonstration</li>
-      <li style="padding:3px 0;color:var(--muted);">— Sous-louer le véhicule à un tiers</li>
-    </ul>
-
-    <h3>Article 9 – Assurance et responsabilité</h3>
-    <div class="contrat-info-row"><span class="ci-label">Franchise :</span><span class="ci-val">1 500 € à la charge du Locataire</span></div>
-    <p>Le véhicule est couvert par l'assurance responsabilité civile du Loueur. En cas de sinistre, dommage matériel, vol ou accident survenant pendant la période de location, une franchise de 1 500 € reste à la charge exclusive du Locataire. Tout sinistre doit être déclaré immédiatement au Loueur et faire l'objet d'un constat amiable rempli et signé par les parties.</p>
-
-    <h3>Article 10 – Équipement frigorifique</h3>
-    <p>Le Locataire s'engage à utiliser le groupe frigorifique dans les conditions prévues par le fabricant. La plage de température de consigne autorisée est comprise entre -18°C et +4°C. Tout dysfonctionnement ou anomalie du système de réfrigération doit être signalé sans délai au Loueur par téléphone ou WhatsApp. Le Locataire est responsable des pertes de marchandises liées à une mauvaise utilisation du groupe.</p>
-
-    <h3>Article 11 – Restitution du véhicule</h3>
-    <p>Le véhicule doit être restitué au lieu convenu, à la date et à l'heure fixées lors de la réservation, propre à l'intérieur (cabine et caisse frigorifique nettoyées) et dans l'état général constaté lors de la remise. Tout retard non signalé 24h à l'avance sera facturé à hauteur d'une journée supplémentaire.</p>
-
-    <h3>Article 12 – Résiliation</h3>
-    <p>En cas de non-respect de l'une des clauses du présent contrat, le Loueur se réserve le droit de récupérer immédiatement le véhicule sans préavis. L'acompte versé reste acquis au Loueur à titre d'indemnité forfaitaire. En cas d'annulation par le Locataire :</p>
-    <ul style="list-style:none;padding-left:0;">
-      <li style="padding:3px 0;color:var(--muted);">— Plus de 7 jours avant : remboursement intégral de l'acompte</li>
-      <li style="padding:3px 0;color:var(--muted);">— 3 à 7 jours avant : remboursement de 50 % de l'acompte</li>
-      <li style="padding:3px 0;color:var(--muted);">— Moins de 3 jours avant : acompte non remboursable</li>
-    </ul>
-
-    <h3>Article 13 – Litiges</h3>
-    <p>Tout litige relatif à l'exécution ou à l'interprétation du présent contrat sera soumis à la compétence des tribunaux de La Réunion. La loi française est applicable. En cas de litige, les parties s'engagent à rechercher une solution amiable avant toute action judiciaire.</p>
-
-    <h3>Article 14 – Signatures</h3>
-    <p>Le présent contrat est établi en deux exemplaires originaux, un pour chaque partie. En signant, le Locataire reconnaît avoir lu et accepté l'intégralité des conditions ci-dessus.</p>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:32px;padding-top:24px;border-top:1px solid rgba(0,198,240,.15);">
-      <div>
-        <p style="color:var(--cold);font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">Signature du Locataire</p>
-        <p style="color:var(--muted);font-size:.8rem;">Nom : ___________________________</p>
-        <p style="color:var(--muted);font-size:.8rem;margin-top:8px;">Date : ___________________________</p>
-        <div style="height:70px;border-bottom:1px solid rgba(185,225,255,.2);margin-top:12px;"></div>
-        <p style="color:var(--muted);font-size:.72rem;margin-top:6px;font-style:italic;">Signature précédée de la mention<br>"Lu et approuvé"</p>
+    <!-- ARTICLE 1 -->
+    <h3>1. Identification des parties</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:8px;">
+      <div style="background:rgba(0,198,240,.04);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+        <p style="color:var(--cold);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">LE LOUEUR</p>
+        <p><strong style="color:var(--white);">Nom / Société :</strong> Hassan Location</p>
+        <p><strong style="color:var(--white);">Adresse :</strong> 212 rue Jules Bertaut, appartement N°32</p>
+        <p><strong style="color:var(--white);">SIREN :</strong> 100 002 716 R.C.S Saint-Pierre de la Réunion</p>
+        <p><strong style="color:var(--white);">Téléphone :</strong> 0693 39 77 92</p>
+        <p><strong style="color:var(--white);">Email :</strong> Lallemandjoan150@gmail.com</p>
       </div>
-      <div>
-        <p style="color:var(--cold);font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">Signature du Loueur</p>
-        <p style="color:var(--muted);font-size:.8rem;">Hassan Location</p>
-        <p style="color:var(--muted);font-size:.8rem;margin-top:8px;">Date : ___________________________</p>
-        <div style="height:70px;border-bottom:1px solid rgba(185,225,255,.2);margin-top:12px;"></div>
-        <p style="color:var(--muted);font-size:.72rem;margin-top:6px;font-style:italic;">Cachet et signature</p>
+      <div style="background:rgba(0,198,240,.04);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+        <p style="color:var(--cold);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">LE LOCATAIRE</p>
+        <p>Nom / Société : ___________________________</p>
+        <p>Adresse : _________________________________</p>
+        <p>Téléphone : _______________________________</p>
+        <p>Email : ___________________________________</p>
+        <p>Pièce d'identité n° : ______________________</p>
+        <p>Permis de conduire n° : ___________________</p>
+        <p>Date d'obtention : _________________________</p>
       </div>
     </div>
 
-  </div>
+    <!-- ARTICLE 2 -->
+    <h3>2. Objet du contrat</h3>
+    <p>Le présent contrat a pour objet la mise à disposition temporaire du véhicule frigorifique suivant :</p>
+    <ul>
+      <li><strong style="color:var(--white);">Marque :</strong> Renault</li>
+      <li><strong style="color:var(--white);">Modèle :</strong> Maxity</li>
+      <li><strong style="color:var(--white);">Immatriculation :</strong> EJ-620-XD</li>
+    </ul>
+    <p style="margin-top:8px;">Le locataire reconnaît avoir reçu le véhicule en bon état de fonctionnement et s'engage à l'utiliser conformément aux dispositions du présent contrat.</p>
+    <p style="margin-top:10px;"><strong style="color:var(--white);">Période de location :</strong></p>
+    <p>Date et heure de départ : ____ / ____ / ______ à ______ h ______</p>
+    <p>Date et heure de retour prévues : ____ / ____ / ______ à ______ h ______</p>
 
-  <!-- Rappel des actions -->
+    <!-- ARTICLE 3 -->
+    <h3>3. Conditions financières</h3>
+    <ul>
+      <li><strong style="color:var(--white);">Tarif :</strong> ……………........ € TTC par jour</li>
+      <li><strong style="color:var(--white);">Forfait inclus :</strong> 200 km par jour</li>
+      <li><strong style="color:var(--white);">Kilomètre supplémentaire :</strong> 0,50 € TTC/km</li>
+      <li><strong style="color:var(--white);">Dépôt de garantie :</strong> 1 500 €</li>
+      <li><strong style="color:var(--white);">Franchise d'assurance :</strong> 2 500 €</li>
+      <li><strong style="color:var(--white);">Franchise conducteur non autorisé :</strong> 1 306 €</li>
+      <li><strong style="color:var(--white);">Retard de restitution :</strong> 50 € TTC par heure commencée. Au-delà de 3 heures : facturation d'une journée supplémentaire.</li>
+      <li><strong style="color:var(--white);">Carburant :</strong> Le véhicule est remis avec un niveau de carburant constaté lors de l'état des lieux de départ. Le locataire s'engage à restituer le véhicule avec un niveau identique. À défaut, le carburant manquant sera facturé au tarif en vigueur au jour de la restitution, augmenté d'un forfait administratif de 20 € TTC.</li>
+    </ul>
+    <p style="margin-top:8px;">Le paiement intégral est exigé avant la remise des clés, soit par virement, espèces ou empreinte bancaire.</p>
+    <p style="margin-top:8px;">Le locataire est responsable de la conservation des clés, télécommandes, cartes de démarrage et de tout dispositif permettant l'accès ou le démarrage du véhicule. En cas de perte, vol, détérioration ou non-restitution des clés lors du retour, le locataire sera tenu de rembourser l'intégralité des frais engagés par le loueur, notamment : le remplacement des clés ou cartes de démarrage, la reprogrammation électronique, le remplacement des barillets ou serrures, les frais de dépannage, remorquage ou déplacement, et les frais d'immobilisation du véhicule.</p>
+    <p style="margin-top:8px;">Un forfait administratif de 50 € TTC sera facturé en complément des frais réellement engagés. L'absence de restitution des clés pourra entraîner la retenue totale ou partielle du dépôt de garantie jusqu'à régularisation complète du dossier.</p>
+
+    <!-- ARTICLE 4 -->
+    <h3>4. Dépôt de garantie</h3>
+    <p>Le dépôt de garantie sera de <strong style="color:var(--white);">1 500 €</strong>. Les moyens de paiement acceptés sont : virement, chèque ou empreinte bancaire. Il couvre notamment : dommages au véhicule, groupe frigorifique, hayon, frais de nettoyage, kilomètres supplémentaires, retards, amendes, frais administratifs et tout autre préjudice subi par le loueur.</p>
+
+    <!-- ARTICLE 5 -->
+    <h3>5. Empreinte bancaire</h3>
+    <p>Le loueur pourra exiger, en complément du dépôt de garantie, une empreinte bancaire au nom du locataire ou du payeur.</p>
+    <p>Cette empreinte bancaire pourra être utilisée pour le règlement des sommes restant dues après restitution du véhicule, notamment en cas de dommages, kilomètres supplémentaires, carburant manquant, frais de nettoyage, amendes, pénalités de retard ou tout autre montant contractuellement dû.</p>
+    <p>Le locataire autorise expressément le loueur à procéder à l'encaissement des sommes justifiées dans les limites prévues par la réglementation applicable.</p>
+
+    <!-- ARTICLE 6 -->
+    <h3>6. Assurance</h3>
+    <p>Le véhicule est assuré par le loueur. Restent à la charge du locataire la franchise applicable, les exclusions de garantie, les dommages résultant d'une faute intentionnelle ou d'une négligence grave ainsi que les frais annexes.</p>
+    <p>La garantie ne s'applique notamment pas en cas d'alcoolémie, stupéfiants, délit de fuite, refus d'obtempérer, conduite sans permis valide, fausse déclaration ou conducteur non déclaré.</p>
+
+    <!-- ARTICLE 7 -->
+    <h3>7. Conducteur autorisé</h3>
+    <p>Le conducteur principal et tout conducteur additionnel doivent être âgés d'au moins <strong style="color:var(--white);">22 ans</strong> et titulaires d'un permis valide depuis au moins <strong style="color:var(--white);">3 ans</strong>.</p>
+
+    <!-- ARTICLE 8 -->
+    <h3>8. Conditions d'utilisation</h3>
+    <p>Sont interdits : sous-location, prêt à un tiers non déclaré, auto-école, auto-partage, transport de personnes à titre onéreux, activités illicites, modifications techniques, remorquage non autorisé et transport de marchandises dangereuses sans accord écrit du loueur.</p>
+
+    <!-- ARTICLE 9 -->
+    <h3>9. Véhicule frigorifique</h3>
+    <p>Le locataire est seul responsable du contrôle de la température, de l'arrimage et de la surveillance des marchandises transportées. Le loueur ne pourra être tenu responsable des pertes ou dégradations de marchandises.</p>
+
+    <!-- ARTICLE 10 -->
+    <h3>10. Panne et assistance</h3>
+    <p>En cas de panne, le locataire doit immédiatement prévenir le loueur. Aucune réparation ne peut être effectuée sans accord préalable. Aucun véhicule de remplacement n'est garanti.</p>
+
+    <!-- ARTICLE 11 -->
+    <h3>11. Sinistre</h3>
+    <p>Tout sinistre doit être signalé immédiatement. Les documents utiles devront être transmis dans un délai maximal de <strong style="color:var(--white);">24 heures</strong>.</p>
+    <p>En cas de dommage entraînant l'immobilisation du véhicule, le locataire pourra être tenu d'indemniser le loueur du préjudice subi correspondant à la perte d'exploitation pendant la durée d'immobilisation, dans la limite des dispositions légales applicables.</p>
+    <p>En cas d'accident dont le locataire n'est pas responsable, celui-ci ne sera redevable d'aucune franchise ni indemnité liée aux dommages pris en charge par l'assureur du tiers responsable. Le locataire s'engage toutefois à transmettre sans délai tous les documents nécessaires à la déclaration du sinistre.</p>
+    <p>En cas d'absence de coopération du locataire ou de transmission tardive des documents ayant pour conséquence un refus ou une limitation de garantie, les conséquences financières pourront lui être imputées.</p>
+
+    <!-- ARTICLE 12 -->
+    <h3>12. Vol</h3>
+    <p>En cas de vol : dépôt de plainte immédiat, transmission du procès-verbal et restitution des clés. L'absence de restitution des clés pourra engager la responsabilité intégrale du locataire.</p>
+    <p>L'absence de restitution des clés originales pourra entraîner la mise à la charge du locataire de l'intégralité du préjudice subi, y compris lorsque l'assureur refuse sa garantie ou applique une exclusion liée à la non-présentation des clés.</p>
+
+    <!-- ARTICLE 13 -->
+    <h3>13. Amendes et infractions</h3>
+    <p>Le locataire demeure seul responsable des contraventions, amendes, péages et frais de fourrière. Des frais administratifs de <strong style="color:var(--white);">35 € TTC</strong> seront facturés par dossier.</p>
+
+    <!-- ARTICLE 14 -->
+    <h3>14. Géolocalisation et protection des données</h3>
+    <p>Le véhicule peut être équipé d'un système de géolocalisation utilisé pour la sécurité, la gestion de flotte et la prévention du vol. Les données sont traitées conformément à la réglementation applicable.</p>
+
+    <!-- ARTICLE 15 -->
+    <h3>15. État du véhicule et kilométrage</h3>
+    <p>Un état des lieux contradictoire sera réalisé au départ et au retour. La fiche d'état des lieux annexée au présent contrat fait partie intégrante de celui-ci.</p>
+    <p>Toute dégradation non mentionnée au départ sera présumée survenue durant la location.</p>
+    <p>Le kilométrage du véhicule est relevé contradictoirement au départ et au retour. Tout kilomètre effectué au-delà du forfait inclus sera facturé conformément au tarif indiqué aux conditions financières.</p>
+    <p>Toute intervention frauduleuse sur le compteur kilométrique entraînera la facturation intégrale du préjudice subi ainsi que la résiliation immédiate du contrat.</p>
+
+    <!-- ARTICLE 16 -->
+    <h3>16. Restitution du véhicule</h3>
+    <p>Le véhicule devra être restitué à la date et à l'heure convenues. Toute dégradation, perte d'équipement ou salissure anormale pourra faire l'objet d'une facturation complémentaire.</p>
+    <p><strong style="color:var(--white);">Frais de nettoyage :</strong></p>
+    <ul>
+      <li>Nettoyage léger : 50 € TTC</li>
+      <li>Nettoyage renforcé : de 100 € à 200 € TTC</li>
+      <li>Nettoyage exceptionnel : jusqu'à 300 € TTC</li>
+    </ul>
+    <p style="margin-top:6px;">Ces frais sont cumulables avec les éventuelles réparations nécessaires.</p>
+
+    <!-- ARTICLE 17 -->
+    <h3>17. Force majeure</h3>
+    <p>Le loueur ne pourra être tenu responsable de l'inexécution de ses obligations résultant d'un cas de force majeure au sens de l'article 1218 du Code civil.</p>
+
+    <!-- ARTICLE 18 -->
+    <h3>18. Résiliation, réservation, acompte et annulation</h3>
+    <p>Le loueur pourra résilier immédiatement le contrat en cas de non-paiement, fausse déclaration, utilisation non conforme ou violation des conditions contractuelles.</p>
+    <p>Toute réservation devient ferme et définitive après versement d'un acompte correspondant à <strong style="color:var(--white);">30 %</strong> du montant total de la location. Le solde est exigible au plus tard avant la remise des clés.</p>
+    <ul>
+      <li><strong style="color:var(--white);">Plus de 7 jours avant le départ :</strong> remboursement intégral de l'acompte.</li>
+      <li><strong style="color:var(--white);">Entre 7 jours et 72 heures avant le départ :</strong> conservation de 50 % de l'acompte.</li>
+      <li><strong style="color:var(--white);">Moins de 72 heures avant le départ :</strong> conservation de l'intégralité de l'acompte.</li>
+      <li><strong style="color:var(--white);">Non-présentation du locataire :</strong> l'acompte reste acquis au loueur à titre d'indemnisation.</li>
+    </ul>
+    <p style="margin-top:8px;">En cas d'annulation par le loueur et d'impossibilité de mettre le véhicule à disposition pour une cause non imputable au locataire, les sommes versées seront intégralement remboursées, sans autre indemnité.</p>
+
+    <!-- ARTICLE 19 -->
+    <h3>19. Litiges et juridiction compétente</h3>
+    <p>Les parties s'engagent à rechercher une solution amiable avant toute procédure judiciaire.</p>
+    <p>Pour les contrats conclus avec un professionnel, tout litige relatif à l'interprétation, l'exécution ou la résiliation du présent contrat relèvera de la compétence exclusive des tribunaux du ressort du siège social du loueur, sauf disposition légale impérative contraire.</p>
+    <p>Pour les consommateurs, les règles légales de compétence demeurent applicables.</p>
+
+    <!-- ARTICLE 20 - SIGNATURES -->
+    <h3>20. Signatures des parties</h3>
+    <p>Les parties déclarent avoir pris connaissance de l'intégralité du présent contrat, de ses annexes et de l'état des lieux, les accepter sans réserve et reconnaître en avoir reçu un exemplaire.</p>
+
+    <div style="margin-top:20px;padding:14px 16px;background:rgba(0,198,240,.05);border:1px solid var(--border);border-radius:10px;font-size:.85rem;color:var(--muted);">
+      Fait à : ______________________________ &nbsp;&nbsp; Le : ____ / ____ / ______
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:28px;padding-top:24px;border-top:1px solid rgba(0,198,240,.15);">
+      <div>
+        <p style="color:var(--cold);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;">Signature du Loueur</p>
+        <p style="color:var(--muted);font-size:.82rem;">Nom / Société : Hassan Location</p>
+        <p style="color:var(--muted);font-size:.8rem;margin-top:6px;">Mention manuscrite : <em>« Lu et approuvé »</em></p>
+        <div style="height:80px;border-bottom:1px solid rgba(185,225,255,.2);margin-top:14px;"></div>
+        <p style="color:var(--muted);font-size:.72rem;margin-top:6px;font-style:italic;">Cachet et signature</p>
+      </div>
+      <div>
+        <p style="color:var(--cold);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;">Signature du Locataire</p>
+        <p style="color:var(--muted);font-size:.82rem;">Nom / Société : ___________________________</p>
+        <p style="color:var(--muted);font-size:.8rem;margin-top:6px;">Mention manuscrite : <em>« Bon pour accord – Je reconnais avoir pris connaissance et accepté les conditions générales de location »</em></p>
+        <div style="height:80px;border-bottom:1px solid rgba(185,225,255,.2);margin-top:14px;"></div>
+        <p style="color:var(--muted);font-size:.72rem;margin-top:6px;font-style:italic;">Signature précédée de la mention manuscrite</p>
+      </div>
+    </div>
+
+  </div><!-- fin .contrat-body -->
+
+  <!-- Rappel actions en bas -->
   <div style="text-align:center;margin-top:32px;padding:24px;background:rgba(0,198,240,.04);border:1px solid var(--border);border-radius:18px;">
     <p style="color:var(--orange);font-weight:700;margin-bottom:16px;">📋 N'oubliez pas d'envoyer ce contrat signé !</p>
     <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:12px;">
-      <a id="wa-contract-btn2" href="#" class="btn btn-wa" target="_blank" rel="noopener">
+      <a id="wa-contract-btn2" href="https://wa.me/262693397792" class="btn btn-wa" target="_blank" rel="noopener">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z"/></svg>
         WhatsApp
       </a>
-      <a href="mailto:contact@hassan-location.re?subject=Contrat%20de%20location%20signé" class="btn btn-email">
+      <a id="email-contract-btn2" href="mailto:Lallemandjoan150@gmail.com?subject=Contrat%20de%20location%20signé" class="btn btn-email">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
         Email
       </a>
-      <button class="btn btn-pdf" onclick="downloadPDF()">
+      <button class="btn btn-pdf" onclick="window.print()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        PDF
+        PDF / Imprimer
       </button>
     </div>
   </div>
@@ -200,7 +281,7 @@
 </main>
 
 <footer class="footer" style="padding:28px 22px;margin-top:60px;">
-  <div class="footer__copy" style="margin:0;">© 2025 Hassan Location · La Réunion (974) · contact@hassan-location.re</div>
+  <div class="footer__copy" style="margin:0;">© 2025 Hassan Location · La Réunion (974) · Lallemandjoan150@gmail.com</div>
 </footer>
 
 <a href="https://wa.me/262693397792" class="wa-fab" target="_blank" rel="noopener" aria-label="WhatsApp">
@@ -210,47 +291,87 @@
 <script src="js/main.js"></script>
 <script>
 (function () {
-  /* Pré-remplissage des infos de réservation dans le contrat */
-  var raw = localStorage.getItem('hl_last_reservation')
-         || sessionStorage.getItem('hl_reservation');
 
-  if (raw) {
-    try {
-      var res = JSON.parse(raw);
-      function fmtDate(s) {
-        return new Date(s + 'T12:00:00').toLocaleDateString('fr-FR', {
-          weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-        });
-      }
-      var infoDiv = document.getElementById('contrat-reservation-info');
-      if (infoDiv) {
-        var paid = res.option === 'deposit'
-          ? 'Acompte 30% réglé : ' + res.paid + '€ · Solde : ' + (res.amount - res.paid) + '€ à la remise des clés'
-          : 'Paiement intégral réglé : ' + res.amount + '€';
-        infoDiv.innerHTML =
-          '<div style="background:rgba(34,211,102,.07);border:1px solid rgba(34,211,102,.2);border-radius:12px;padding:16px 18px;margin-bottom:4px;">' +
-          '<p style="color:var(--white);font-family:var(--font-head);font-weight:700;font-size:.9rem;margin-bottom:10px;">Réservation concernée par ce contrat :</p>' +
-          '<div class="contrat-info-row"><span class="ci-label">Référence :</span><span class="ci-val">HL-' + String(res.timestamp).slice(-6) + '</span></div>' +
-          '<div class="contrat-info-row"><span class="ci-label">Dates :</span><span class="ci-val">Du ' + fmtDate(res.startDate) + ' au ' + fmtDate(res.endDate) + '</span></div>' +
-          '<div class="contrat-info-row"><span class="ci-label">Durée :</span><span class="ci-val">' + res.days + ' jour' + (res.days > 1 ? 's' : '') + '</span></div>' +
-          '<div class="contrat-info-row"><span class="ci-label">Montant total :</span><span class="ci-val">' + res.amount + ' €</span></div>' +
-          '<div class="contrat-info-row"><span class="ci-label">Paiement :</span><span class="ci-val">' + paid + '</span></div>' +
-          '</div>';
-      }
-
-      /* Mise à jour des liens WhatsApp avec contexte */
-      var waMsg = 'Bonjour Hassan Location,\n\nJe vous envoie mon contrat de location signé.\n\nRéférence : HL-' + String(res.timestamp).slice(-6) + '\nDates : du ' + res.startDate + ' au ' + res.endDate + '\n\nVeuillez trouver ci-joint le contrat signé et mes documents.';
-      var waHref = 'https://wa.me/262693397792?text=' + encodeURIComponent(waMsg);
-      document.querySelectorAll('[id^="wa-contract-btn"]').forEach(function(a) {
-        a.href = waHref;
-      });
-    } catch (e) { /* silencieux */ }
+  /* ── Protection accès direct ──────────────────────────────────
+     La page contrat n'est accessible qu'après une réservation payée.
+     Si aucune donnée de réservation n'est disponible → retour accueil.
+  ──────────────────────────────────────────────────────────────── */
+  var raw = localStorage.getItem('hl_last_reservation');
+  if (!raw) {
+    window.location.replace('index.html');
+    return; // stop execution
   }
 
-  /* Téléchargement PDF via window.print() avec print CSS */
-  window.downloadPDF = function () {
-    window.print();
-  };
+  /* ── Lecture et affichage des informations de réservation ──── */
+  try {
+    var res = JSON.parse(raw);
+
+    /* Compatibilité : la réservation vient de /api/reservation
+       Structure : { id, start_date, end_date, days, total_amount,
+                     amount_paid, payment_option, stripe_session_id, ... }
+    */
+    function fmtDate(s) {
+      if (!s || s === '?') return '—';
+      var d = new Date(s + 'T12:00:00');
+      if (isNaN(d.getTime())) return s;
+      return d.toLocaleDateString('fr-FR', {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+      });
+    }
+
+    /* Référence : utiliser id si disponible, sinon générer depuis stripe_session_id */
+    var refNum = res.id
+      || (res.stripe_session_id ? 'HL-' + res.stripe_session_id.slice(-6).toUpperCase() : 'HL-' + String(Date.now()).slice(-6));
+
+    /* Numéro de contrat en haut */
+    var contratNumEl = document.getElementById('contrat-num');
+    if (contratNumEl) contratNumEl.textContent = refNum;
+
+    /* Bloc récapitulatif */
+    var infoDiv = document.getElementById('contrat-reservation-info');
+    if (infoDiv) {
+      var totalAmount = res.total_amount || 0;
+      var amountPaid  = res.amount_paid  || 0;
+      var payOpt      = res.payment_option || 'full';
+
+      var paidLabel = payOpt === 'deposit'
+        ? 'Acompte 30% réglé : ' + amountPaid + '€ · Solde : ' + (totalAmount - amountPaid) + '€ à la remise des clés'
+        : 'Paiement intégral réglé : ' + totalAmount + '€';
+
+      infoDiv.innerHTML =
+        '<div style="background:rgba(34,211,102,.07);border:1px solid rgba(34,211,102,.2);border-radius:12px;padding:16px 18px;margin-bottom:4px;">' +
+        '<p style="color:var(--white);font-family:var(--font-head);font-weight:700;font-size:.9rem;margin-bottom:10px;">Réservation concernée par ce contrat :</p>' +
+        '<div class="contrat-info-row"><span class="ci-label">Référence :</span><span class="ci-val">' + refNum + '</span></div>' +
+        '<div class="contrat-info-row"><span class="ci-label">Dates :</span><span class="ci-val">Du ' + fmtDate(res.start_date) + ' au ' + fmtDate(res.end_date) + '</span></div>' +
+        '<div class="contrat-info-row"><span class="ci-label">Durée :</span><span class="ci-val">' + (res.days || '—') + ' jour' + ((res.days || 0) > 1 ? 's' : '') + '</span></div>' +
+        '<div class="contrat-info-row"><span class="ci-label">Montant total :</span><span class="ci-val">' + totalAmount + ' €</span></div>' +
+        '<div class="contrat-info-row"><span class="ci-label">Paiement :</span><span class="ci-val">' + paidLabel + '</span></div>' +
+        '</div>';
+    }
+
+    /* Mise à jour des liens WhatsApp avec le contexte de la réservation */
+    var waMsg = 'Bonjour Hassan Location,\n\nJe vous envoie mon contrat de location signé.\n\nRéférence : ' + refNum +
+      '\nDates : du ' + (res.start_date || '?') + ' au ' + (res.end_date || '?') +
+      '\n\nVeuillez trouver ci-joint le contrat signé et mes documents (permis de conduire + pièce d\'identité).';
+
+    var waHref = 'https://wa.me/262693397792?text=' + encodeURIComponent(waMsg);
+    document.querySelectorAll('[id^="wa-contract-btn"]').forEach(function(a) {
+      a.href = waHref;
+    });
+
+    /* Mise à jour des liens email avec sujet personnalisé */
+    var emailSubject = 'Contrat de location signé – Réf ' + refNum;
+    var emailBody    = 'Bonjour,\n\nVeuillez trouver en pièce jointe mon contrat de location signé.\n\nRéférence : ' + refNum + '\nDates : du ' + (res.start_date || '?') + ' au ' + (res.end_date || '?') + '\n\nCordialement.';
+    var emailHref    = 'mailto:Lallemandjoan150@gmail.com?subject=' + encodeURIComponent(emailSubject) + '&body=' + encodeURIComponent(emailBody);
+    document.querySelectorAll('[id^="email-contract-btn"]').forEach(function(a) {
+      a.href = emailHref;
+    });
+
+  } catch(e) {
+    /* En cas d'erreur de parsing, laisser la page s'afficher normalement */
+    console.warn('Hassan Location: impossible de lire les données de réservation', e);
+  }
+
 })();
 </script>
 </body>
