@@ -45,8 +45,33 @@
     <p style="color:rgba(185,225,255,.4);font-size:.78rem;margin-top:10px;">Ce contrat complète nos <a href="cgv.html" style="color:var(--cold);text-decoration:underline;">Conditions Générales de Vente</a>.</p>
   </div>
 
-  <!-- ════ ENCART AVERTISSEMENT ════ -->
-  <div class="contrat-alert">
+  <!-- ════ ENCART — MODÈLE DE CONTRAT (affiché par défaut, ex. accès depuis les CGV) ════ -->
+  <div class="contrat-alert" id="contrat-alert-template">
+    <span class="contrat-alert__icon">📄</span>
+    <div class="contrat-alert__title">
+      Ceci est un modèle de contrat de location,<br>
+      fourni à titre informatif.
+    </div>
+    <p style="color:rgba(220,180,120,.9);font-size:.88rem;margin-bottom:12px;">
+      Il vous permet de consulter à l'avance l'ensemble des conditions applicables à la location.
+      Un exemplaire <strong style="color:#ffb340;">complété avec les informations de votre réservation</strong>
+      vous sera automatiquement présenté ici après le paiement de votre réservation en ligne.
+    </p>
+    <ul class="contrat-alert__steps">
+      <li>Lisez attentivement les conditions ci-dessous avant de réserver</li>
+      <li>Réservez vos dates depuis la page d'accueil</li>
+      <li>Après paiement, retrouvez ici votre contrat pré-rempli à signer</li>
+      <li>Envoyez-le avec votre permis de conduire et pièce d'identité</li>
+    </ul>
+    <div class="contrat-actions">
+      <a href="index.html#reservation" class="btn btn-cold">
+        Réserver maintenant →
+      </a>
+    </div>
+  </div>
+
+  <!-- ════ ENCART — RÉSERVATION EN COURS (affiché uniquement si une réservation est détectée) ════ -->
+  <div class="contrat-alert" id="contrat-alert-reservation" style="display:none;">
     <span class="contrat-alert__icon">⚠️</span>
     <div class="contrat-alert__title">
       Votre réservation ne sera définitivement validée<br>
@@ -67,7 +92,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z"/></svg>
         Envoyer par WhatsApp
       </a>
-      <a id="email-contract-btn" href="mailto:Lallemandjoan150@gmail.com?subject=Contrat%20de%20location%20signé" class="btn btn-email">
+      <a id="email-contract-btn" href="mailto:lallemandjoan150@gmail.com?subject=Contrat%20de%20location%20signé" class="btn btn-email">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
         Envoyer par Email
       </a>
@@ -99,7 +124,7 @@
         <p><strong style="color:var(--white);">Adresse :</strong> 212 rue Jules Bertaut, appartement N°32</p>
         <p><strong style="color:var(--white);">SIREN :</strong> 100 002 716 R.C.S Saint-Pierre de la Réunion</p>
         <p><strong style="color:var(--white);">Téléphone :</strong> 0693 39 77 92</p>
-        <p><strong style="color:var(--white);">Email :</strong> Lallemandjoan150@gmail.com</p>
+        <p><strong style="color:var(--white);">Email :</strong> lallemandjoan150@gmail.com</p>
       </div>
       <div style="background:rgba(0,198,240,.04);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
         <p style="color:var(--cold);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">LE LOCATAIRE</p>
@@ -261,14 +286,14 @@
   </div><!-- fin .contrat-body -->
 
   <!-- Rappel actions en bas -->
-  <div style="text-align:center;margin-top:32px;padding:24px;background:rgba(0,198,240,.04);border:1px solid var(--border);border-radius:18px;">
-    <p style="color:var(--orange);font-weight:700;margin-bottom:16px;">📋 N'oubliez pas d'envoyer ce contrat signé !</p>
-    <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:12px;">
+  <div style="text-align:center;margin-top:32px;padding:24px;background:rgba(0,198,240,.04);border:1px solid var(--border);border-radius:18px;" id="contrat-footer-reminder">
+    <p style="color:var(--orange);font-weight:700;margin-bottom:16px;" id="contrat-footer-reminder-text">💬 Une question sur ce contrat avant de réserver ?</p>
+    <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:12px;" id="contrat-footer-reminder-actions">
       <a id="wa-contract-btn2" href="https://wa.me/262693397792" class="btn btn-wa" target="_blank" rel="noopener">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z"/></svg>
         WhatsApp
       </a>
-      <a id="email-contract-btn2" href="mailto:Lallemandjoan150@gmail.com?subject=Contrat%20de%20location%20signé" class="btn btn-email">
+      <a id="email-contract-btn2" href="mailto:lallemandjoan150@gmail.com?subject=Contrat%20de%20location%20signé" class="btn btn-email">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
         Email
       </a>
@@ -286,7 +311,7 @@
     <a href="index.html" class="footer__link">Accueil</a>
     <a href="cgv.html" class="footer__link">CGV &amp; Mentions légales</a>
   </div>
-  <div class="footer__copy" style="margin:0;">© 2025 Hassan Location · La Réunion (974) · Lallemandjoan150@gmail.com</div>
+  <div class="footer__copy" style="margin:0;">© 2025 Hassan Location · La Réunion (974) · lallemandjoan150@gmail.com</div>
 </footer>
 
 <a href="https://wa.me/262693397792" class="wa-fab" target="_blank" rel="noopener" aria-label="WhatsApp">
@@ -297,14 +322,17 @@
 <script>
 (function () {
 
-  /* ── Protection accès direct ──────────────────────────────────
-     La page contrat n'est accessible qu'après une réservation payée.
-     Si aucune donnée de réservation n'est disponible → retour accueil.
+  /* ── Détection du contexte d'accès ──────────────────────────────
+     - Aucune donnée de réservation en localStorage → la page reste
+       affichée comme un MODÈLE de contrat vierge (ex. lien depuis
+       les CGV, accès direct, consultation avant réservation).
+     - Donnée de réservation présente (après paiement, via
+       confirmation.html) → la page bascule en mode "réservation" et
+       affiche les informations de la location concernée.
   ──────────────────────────────────────────────────────────────── */
   var raw = localStorage.getItem('hl_last_reservation');
   if (!raw) {
-    window.location.replace('index.html');
-    return; // stop execution
+    return; // Mode modèle : les blocs par défaut restent affichés tels quels
   }
 
   /* ── Lecture et affichage des informations de réservation ──── */
@@ -323,6 +351,15 @@
         weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
       });
     }
+
+    /* Bascule visuelle : encart "modèle" masqué, encart "réservation" affiché */
+    var alertTemplate    = document.getElementById('contrat-alert-template');
+    var alertReservation = document.getElementById('contrat-alert-reservation');
+    if (alertTemplate)    alertTemplate.style.display    = 'none';
+    if (alertReservation) alertReservation.style.display = '';
+
+    var reminderText = document.getElementById('contrat-footer-reminder-text');
+    if (reminderText) reminderText.textContent = '📋 N\'oubliez pas d\'envoyer ce contrat signé !';
 
     /* Référence : utiliser id si disponible, sinon générer depuis stripe_session_id */
     var refNum = res.id
@@ -367,7 +404,7 @@
     /* Mise à jour des liens email avec sujet personnalisé */
     var emailSubject = 'Contrat de location signé – Réf ' + refNum;
     var emailBody    = 'Bonjour,\n\nVeuillez trouver en pièce jointe mon contrat de location signé.\n\nRéférence : ' + refNum + '\nDates : du ' + (res.start_date || '?') + ' au ' + (res.end_date || '?') + '\n\nCordialement.';
-    var emailHref    = 'mailto:Lallemandjoan150@gmail.com?subject=' + encodeURIComponent(emailSubject) + '&body=' + encodeURIComponent(emailBody);
+    var emailHref    = 'mailto:lallemandjoan150@gmail.com?subject=' + encodeURIComponent(emailSubject) + '&body=' + encodeURIComponent(emailBody);
     document.querySelectorAll('[id^="email-contract-btn"]').forEach(function(a) {
       a.href = emailHref;
     });

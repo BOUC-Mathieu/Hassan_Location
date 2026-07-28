@@ -17,7 +17,7 @@ window.SITE_CONFIG = (function () {
   var PHONE         = '0693397792';
   var PHONE_DISPLAY = '0693 39 77 92';
   var WHATSAPP      = '262693397792';
-  var EMAIL         = 'contact@hassan-location.re';
+  var EMAIL         = 'lallemandjoan150@gmail.com';
 
   /* ─── Stripe (clé PUBLIQUE uniquement — pk_live_ ou pk_test_) ─ */
   var STRIPE_PUBLIC_KEY = 'pk_test_51TxKygQ4OOddmt1dysPugPio1SBmdaIiCRHDx0KOaDfZi4lNEmlNSu6JgQj4iR5UisnNCPUSeibPK6vEleztKA3600WiwVXqpu';
