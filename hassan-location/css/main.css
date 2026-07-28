@@ -752,18 +752,68 @@ img { max-width: 100%; display: block; }
   border-radius: var(--r-lg); padding: 32px;
   backdrop-filter: blur(14px);
 }
+.contrat-body h2 {
+  font-family: var(--font-head); font-weight: 900; font-size: 1.15rem;
+  color: var(--white); letter-spacing: -.01em;
+  margin: 40px 0 14px; padding-top: 28px; border-top: 1px solid rgba(0,198,240,.12);
+  scroll-margin-top: 90px;
+}
+.contrat-body h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
 .contrat-body h3 {
   font-family: var(--font-head); font-weight: 700; font-size: .78rem;
   text-transform: uppercase; letter-spacing: .08em; color: var(--cold);
-  margin: 24px 0 8px;
+  margin: 24px 0 8px; scroll-margin-top: 90px;
 }
 .contrat-body h3:first-child { margin-top: 0; }
 .contrat-body p { font-size: .88rem; color: var(--muted); line-height: 1.75; margin-bottom: 8px; }
+.contrat-body ul { padding-left: 20px; margin-bottom: 10px; }
+.contrat-body li { font-size: .88rem; color: var(--muted); line-height: 1.75; margin-bottom: 4px; }
+.contrat-body a { text-underline-offset: 3px; }
 .contrat-body .contrat-info-row {
   display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px;
 }
 .contrat-body .ci-label { font-size: .8rem; color: var(--cold); font-weight: 600; min-width: 140px; flex-shrink: 0; }
 .contrat-body .ci-val { font-size: .88rem; color: var(--white); }
+
+/* ── 20bis. SOMMAIRE CGV (page cgv.html) ────────────────────────── */
+.cgv-toc {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 22px 24px; margin-bottom: 28px;
+  backdrop-filter: blur(14px);
+}
+.cgv-toc__title {
+  font-family: var(--font-head); font-weight: 700; font-size: .72rem;
+  text-transform: uppercase; letter-spacing: .1em; color: var(--cold);
+  margin-bottom: 14px;
+}
+.cgv-toc__grid {
+  display: grid; grid-template-columns: repeat(2,1fr); gap: 6px 18px;
+}
+.cgv-toc__link {
+  font-size: .84rem; color: var(--muted); padding: 5px 0;
+  border-bottom: 1px dashed transparent; transition: color .2s, border-color .2s;
+}
+.cgv-toc__link:hover { color: var(--cold); border-color: var(--cold-border); }
+
+/* ── 20ter. CASE À COCHER — ACCEPTATION CGV / CONTRAT ───────────── */
+.consent-check {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: rgba(0,198,240,.05); border: 1px solid var(--border);
+  border-radius: var(--r-sm); padding: 14px 16px; margin-bottom: 14px;
+  cursor: pointer;
+}
+.consent-check input[type="checkbox"] {
+  width: 19px; height: 19px; margin-top: 1px; flex-shrink: 0;
+  accent-color: var(--cold); cursor: pointer;
+}
+.consent-check span { font-size: .82rem; color: var(--muted); line-height: 1.55; }
+.consent-check a { color: var(--cold); text-decoration: underline; text-underline-offset: 2px; }
+.consent-check a:hover { color: var(--cold-lt); }
+.consent-check.error { border-color: rgba(255,60,60,.5); background: rgba(255,60,60,.06); }
+.consent-error-msg {
+  display: none; color: #ff6060; font-size: .8rem; margin: -6px 0 14px;
+}
+.consent-error-msg.visible { display: block; }
 
 /* ── 21. RESPONSIVE ─────────────────────────────────────────────── */
 @media (max-width: 900px) {
@@ -792,6 +842,8 @@ img { max-width: 100%; display: block; }
   .bk-modal { padding: 28px 18px; margin-top: 0; }
   .contrat-actions { flex-direction: column; }
   .contrat-page { padding: 20px 16px 60px; }
+  .cgv-toc__grid { grid-template-columns: 1fr; }
+  .cgv-toc { padding: 18px 18px; }
   .confirm-card { padding: 36px 22px; }
   .wa-fab { bottom: 16px; right: 16px; }
 }

@@ -9,8 +9,14 @@
     currentStep: 1, startDate: null, endDate: null,
     days: 0, rate: 0, total: 0, deposit: 0,
     rateTag: '', discount: '', payOption: null,
-    calMonth: null, blockedRanges: []
+    calMonth: null, blockedRanges: [], consent: false
   };
+
+  /* ── Case à cocher CGV / Contrat de location (obligatoire) ── */
+  function updatePayBtnState() {
+    var bp = document.getElementById('bk-btn-pay');
+    if (bp) bp.disabled = !(state.payOption && state.consent);
+  }
 
   /* ── Tarification (affichage seulement — serveur recalcule) ── */
   function getRate(d) {
@@ -202,13 +208,19 @@
         '<br>💳 ' + lbl;
       recap.classList.add('visible');
     }
-    var bp = document.getElementById('bk-btn-pay');
-    if (bp) bp.disabled = false;
+    updatePayBtnState();
   };
 
   /* ── Appel /api/checkout → redirection Stripe ── */
   async function goToStripe() {
     if (!state.payOption || !state.startDate || !state.endDate) return;
+    if (!state.consent) {
+      var wrap = document.getElementById('consent-check-wrap');
+      var err  = document.getElementById('consent-error-msg');
+      if (wrap) wrap.classList.add('error');
+      if (err)  err.classList.add('visible');
+      return;
+    }
     showPanel(3);
     hideStripeErr();
     try {
@@ -250,12 +262,15 @@
     ov.classList.add('open');
     document.body.style.overflow = 'hidden';
     var today = new Date(); today.setDate(1);
-    state.calMonth = today; state.startDate = null; state.endDate = null; state.payOption = null;
+    state.calMonth = today; state.startDate = null; state.endDate = null; state.payOption = null; state.consent = false;
     loadBlockedDates();
     showPanel(1);
     var bn = document.getElementById('bk-btn-next-1'); if(bn) bn.disabled = true;
     var rc = document.getElementById('pay-recap'); if(rc) rc.classList.remove('visible');
     var sm = document.getElementById('cal-summary'); if(sm) sm.classList.remove('visible');
+    var cc = document.getElementById('consent-cgv'); if(cc) cc.checked = false;
+    var cw = document.getElementById('consent-check-wrap'); if(cw) cw.classList.remove('error');
+    var ce = document.getElementById('consent-error-msg'); if(ce) ce.classList.remove('visible');
     hideStripeErr();
   }
 
@@ -280,6 +295,17 @@
     if (bn1) { bn1.disabled=true; bn1.addEventListener('click', function(){ if(!state.startDate||!state.endDate||state.days<1) return; initPay(); showPanel(2); }); }
     var bp = document.getElementById('bk-btn-pay');
     if (bp) { bp.disabled=true; bp.addEventListener('click', goToStripe); }
+    var cc = document.getElementById('consent-cgv');
+    if (cc) {
+      cc.addEventListener('change', function () {
+        state.consent = cc.checked;
+        if (cc.checked) {
+          var cw = document.getElementById('consent-check-wrap'); if(cw) cw.classList.remove('error');
+          var ce = document.getElementById('consent-error-msg'); if(ce) ce.classList.remove('visible');
+        }
+        updatePayBtnState();
+      });
+    }
     if (window.location.search.includes('cancelled=true')) { openModal(); history.replaceState({},'',' '); }
   });
 })();
