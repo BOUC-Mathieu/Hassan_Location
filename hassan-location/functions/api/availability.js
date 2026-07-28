@@ -7,6 +7,12 @@
  * Réservations bloquantes : status IN ('paid', 'validated')
  * Réservations libres     : status IN ('cancelled', 'refunded')
  *
+ * Depuis l'ajout de l'administration du planning (/planning-admin), les
+ * blocages manuels (table manual_blocks) sont fusionnés dans la même
+ * liste — le site public ne fait aucune distinction entre une date
+ * bloquée par un paiement Stripe ou par l'administrateur : les deux
+ * s'affichent exactement de la même façon (aucun changement visuel).
+ *
  * Réponse : { ok: true, blocked: [{ start_date, end_date, status }] }
  */
 export async function onRequestGet({ env }) {
@@ -42,7 +48,25 @@ export async function onRequestGet({ env }) {
       ORDER  BY start_date ASC
     `).bind(today).all();
 
-    return Response.json({ ok: true, blocked: results }, { headers });
+    // ─── Blocages manuels (interface admin) ─────────────────────────
+    // Table ajoutée par la migration admin. Si elle n'existe pas encore
+    // (site pas encore migré), on ignore silencieusement l'erreur pour ne
+    // jamais casser le calendrier public existant.
+    let manualBlocked = [];
+    try {
+      const { results: manualRows } = await env.DB.prepare(`
+        SELECT date FROM manual_blocks WHERE date >= ? ORDER BY date ASC
+      `).bind(today).all();
+      manualBlocked = manualRows.map((r) => ({
+        start_date: r.date,
+        end_date:   r.date,
+        status:     'manual',
+      }));
+    } catch (manualErr) {
+      console.warn('[availability] manual_blocks indisponible (migration admin non appliquée ?):', manualErr.message);
+    }
+
+    return Response.json({ ok: true, blocked: [...results, ...manualBlocked] }, { headers });
 
   } catch (err) {
     console.error(
