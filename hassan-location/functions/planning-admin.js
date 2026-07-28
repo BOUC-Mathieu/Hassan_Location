@@ -149,7 +149,7 @@ const PAGE_HTML = `<!DOCTYPE html>
   .recap-card.show{display:block}
   .recap-card h2{font-size:1.1rem; margin-bottom:4px}
   .recap-card .sub{margin-bottom:16px}
-  .recap-list{list-style:none; display:flex; flex-direction:column; gap:8px; margin-bottom:18px; max-height:50vh; overflow-y:auto}
+  .recap-list{list-style:none; display:flex; flex-direction:column; gap:8px; margin-bottom:18px; max-height:65vh; overflow-y:auto; padding-right:4px}
   .recap-list li{
     font-size:.82rem; background:rgba(255,255,255,.03); border:1px solid var(--border);
     border-radius:9px; padding:9px 11px;
@@ -199,7 +199,7 @@ const PAGE_HTML = `<!DOCTYPE html>
 
   <div class="recap-card" id="recap-view">
     <h2>Récapitulatif de la session</h2>
-    <div class="sub">Modifications confirmées pendant cette connexion :</div>
+    <div class="sub" id="recap-sub">Modifications confirmées pendant cette connexion :</div>
     <ul class="recap-list" id="recap-list"></ul>
     <button class="btn-back" id="back-btn">Retour au site</button>
   </div>
@@ -241,6 +241,7 @@ const PAGE_HTML = `<!DOCTYPE html>
   var elConfirmCount = document.getElementById('confirm-count');
   var elMainView     = document.getElementById('main-view');
   var elRecapView    = document.getElementById('recap-view');
+  var elRecapSub      = document.getElementById('recap-sub');
   var elRecapList     = document.getElementById('recap-list');
 
   function setStatus(msg, kind){
@@ -434,14 +435,16 @@ const PAGE_HTML = `<!DOCTYPE html>
   document.getElementById('reset-btn').addEventListener('click', resetSelection);
   document.getElementById('confirm-btn').addEventListener('click', confirmSelection);
 
-  /* ── Déconnexion réelle (Basic Auth → écrase le cache navigateur) ── */
+  /* ── Déconnexion : redirection simple vers le site public ──────────
+     Basic Auth n'a pas de "logout" serveur : le navigateur garde
+     l'identifiant/mot de passe en cache tant qu'il n'est pas fermé.
+     Tenter de forcer l'oubli des identifiants (requête avec de faux
+     identifiants) déclenche une repopup d'authentification dans certains
+     navigateurs (Firefox notamment) — on se contente donc d'une simple
+     redirection, comme demandé. Pour une déconnexion garantie à 100 %,
+     fermer l'onglet/le navigateur reste la seule méthode fiable. */
   function hardLogout(){
-    fetch('/planning-admin', {
-      headers: { 'Authorization': 'Basic ' + btoa('logout:logout') },
-      cache: 'no-store'
-    }).catch(function(){}).finally(function(){
-      window.location.href = '/index.html';
-    });
+    window.location.href = '/index.html';
   }
 
   /* ── Bouton Déconnexion → écran récapitulatif ── */
@@ -451,9 +454,14 @@ const PAGE_HTML = `<!DOCTYPE html>
       return;
     }
     if (sessionHistory.length === 0){
+      elRecapSub.textContent = 'Modifications confirmées pendant cette connexion :';
       elRecapList.innerHTML = '<div class="recap-empty">Aucune modification effectuée pendant cette session.</div>';
     } else {
-      elRecapList.innerHTML = sessionHistory.map(function(h){
+      var n = sessionHistory.length;
+      elRecapSub.textContent = n + ' modification' + (n>1?'s':'') + ' confirmée' + (n>1?'s':'') + ' pendant cette connexion :';
+      // Plus récent en premier ; la liste défile (max-height + overflow-y)
+      // donc tout est consultable même avec un grand nombre de modifications.
+      elRecapList.innerHTML = sessionHistory.slice().reverse().map(function(h){
         return '<li><span class="t">' + h.time + '</span>' + h.text + '</li>';
       }).join('');
     }
