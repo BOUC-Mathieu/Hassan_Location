@@ -12,6 +12,9 @@
  *
  * Consomme /api/admin-blocks (également protégée) pour lire/écrire les
  * réservations Stripe et les blocages manuels.
+ *
+ * v2 : confirmation avant blocage/déblocage manuel, bouton déconnexion,
+ * déconnexion automatique après inactivité.
  */
 
 import { checkAdminAuth } from './_lib/auth.js';
@@ -49,8 +52,14 @@ const PAGE_HTML = `<!DOCTYPE html>
     background:var(--bg); color:var(--text); min-height:100vh;
     padding:20px 14px 60px; line-height:1.5;
   }
-  h1{font-size:1.3rem; font-weight:700; margin-bottom:4px}
+  .top{display:flex; align-items:flex-start; justify-content:space-between; max-width:480px; margin:0 auto 4px; gap:10px}
+  h1{font-size:1.3rem; font-weight:700}
   .sub{color:var(--muted); font-size:.85rem; margin-bottom:20px}
+  .logout-btn{
+    flex-shrink:0; background:rgba(255,77,77,.12); border:1px solid rgba(255,77,77,.35);
+    color:#ffb0b0; font-size:.78rem; font-weight:600; padding:8px 12px; border-radius:10px; cursor:pointer;
+  }
+  .logout-btn:active{background:rgba(255,77,77,.25)}
   .card{
     background:var(--card); border:1px solid var(--border); border-radius:var(--r);
     padding:16px; max-width:480px; margin:0 auto 16px; backdrop-filter:blur(10px);
@@ -84,7 +93,7 @@ const PAGE_HTML = `<!DOCTYPE html>
     text-align:center; font-size:.8rem; color:var(--muted); min-height:20px; margin-top:10px;
   }
   .status.error{color:var(--red)}
-  .logout{
+  .foot-note{
     display:block; max-width:480px; margin:0 auto; text-align:center;
     color:var(--muted); font-size:.78rem; margin-top:18px;
   }
@@ -102,8 +111,13 @@ const PAGE_HTML = `<!DOCTYPE html>
 </head>
 <body>
 
-  <h1>📅 Planning — Hassan Location</h1>
-  <div class="sub">Vert = disponible · Rouge = réservation Stripe · Orange = blocage manuel</div>
+  <div class="top">
+    <div>
+      <h1>📅 Planning — Hassan Location</h1>
+      <div class="sub">Vert = disponible · Rouge = réservation Stripe · Orange = blocage manuel</div>
+    </div>
+    <button class="logout-btn" id="logout-btn">Déconnexion</button>
+  </div>
 
   <div class="card">
     <div class="nav">
@@ -123,7 +137,7 @@ const PAGE_HTML = `<!DOCTYPE html>
     <div class="status" id="status"></div>
   </div>
 
-  <div class="logout">Fermez cet onglet pour vous déconnecter.</div>
+  <div class="foot-note">Déconnexion automatique après 10 minutes d'inactivité.</div>
 
   <div class="overlay" id="overlay"><div class="spinner"></div></div>
 
@@ -132,6 +146,7 @@ const PAGE_HTML = `<!DOCTYPE html>
   'use strict';
 
   var MFR = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  var INACTIVITY_LIMIT_MS = 10 * 60 * 1000; // 10 minutes
 
   var state = {
     month: (function(){ var d=new Date(); d.setDate(1); d.setHours(0,0,0,0); return d; })(),
@@ -219,19 +234,25 @@ const PAGE_HTML = `<!DOCTYPE html>
     var st = dayStatus(iso);
 
     if (st === 'available'){
+      var okBlock = confirm('Bloquer la date du ' + iso + ' ?\\n\\nAppuyez sur OK pour confirmer, ou Annuler pour ne rien faire.');
+      if (!okBlock) return;
       await sendAction({ action:'block-manual', date: iso }, 'Blocage de ' + iso + '…');
+
     } else if (st === 'manual'){
+      var okUnblock = confirm('Débloquer la date du ' + iso + ' ?\\n\\nAppuyez sur OK pour confirmer, ou Annuler pour ne rien faire.');
+      if (!okUnblock) return;
       await sendAction({ action:'unblock-manual', date: iso }, 'Déblocage de ' + iso + '…');
+
     } else if (st === 'stripe'){
       var r = findStripeReservation(iso);
       if (!r) return;
-      var ok = confirm(
+      var okCancel = confirm(
         'Réservation ' + r.id + '\\n' +
         'Du ' + r.start_date + ' au ' + r.end_date + '\\n' +
         (r.client_email ? 'Client : ' + r.client_email + '\\n' : '') +
         '\\nAnnuler cette réservation et libérer TOUTES ses dates ?'
       );
-      if (!ok) return;
+      if (!okCancel) return;
       await sendAction({ action:'cancel-reservation', reservationId: r.id }, 'Annulation de ' + r.id + '…');
     }
   }
@@ -265,6 +286,33 @@ const PAGE_HTML = `<!DOCTYPE html>
   document.getElementById('next').addEventListener('click', function(){
     state.month.setMonth(state.month.getMonth()+1); render();
   });
+
+  /* ── Déconnexion ────────────────────────────────────────────────
+     Basic Auth n'a pas de "logout" serveur : le navigateur garde les
+     identifiants en cache tant qu'il n'est pas fermé. On envoie une
+     requête avec de faux identifiants pour écraser le cache du
+     navigateur (fonctionne sur la majorité des navigateurs modernes),
+     puis on redirige vers le site public. */
+  function doLogout(){
+    fetch('/planning-admin', {
+      headers: { 'Authorization': 'Basic ' + btoa('logout:logout') },
+      cache: 'no-store'
+    }).catch(function(){}).finally(function(){
+      window.location.href = '/index.html';
+    });
+  }
+  document.getElementById('logout-btn').addEventListener('click', doLogout);
+
+  /* ── Déconnexion automatique après inactivité ─────────────────── */
+  var inactivityTimer = null;
+  function resetInactivityTimer(){
+    if (inactivityTimer) clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(doLogout, INACTIVITY_LIMIT_MS);
+  }
+  ['mousemove','mousedown','keydown','touchstart','scroll'].forEach(function(evt){
+    document.addEventListener(evt, resetInactivityTimer, { passive: true });
+  });
+  resetInactivityTimer();
 
   loadData();
 })();
