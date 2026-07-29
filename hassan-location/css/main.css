@@ -576,6 +576,34 @@ img { max-width: 100%; display: block; }
   padding: 2px 7px; border-radius: var(--r-pill); margin-left: 6px;
 }
 
+/* Heure de prise en charge */
+.pickup-time-card {
+  background: rgba(0,198,240,.06); border: 1px solid var(--border);
+  border-radius: var(--r-sm); padding: 16px 18px; margin-bottom: 24px;
+  display: none;
+}
+.pickup-time-card.visible { display: block; }
+.pickup-time-card__label {
+  display: block; font-weight: 700; color: var(--white);
+  font-size: .92rem; margin-bottom: 10px;
+}
+.pickup-time-card__select {
+  width: 100%; appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  background: rgba(4,12,26,.6) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath fill='%2300c6f0' d='M7 9 0 0h14z'/%3E%3C/svg%3E") no-repeat right 16px center;
+  border: 1px solid var(--border); border-radius: var(--r-sm);
+  color: var(--white); font-family: var(--font-body); font-size: .95rem; font-weight: 600;
+  padding: 12px 40px 12px 14px; cursor: pointer; transition: border-color .2s;
+  margin-bottom: 14px;
+}
+.pickup-time-card__select:hover,
+.pickup-time-card__select:focus {
+  border-color: rgba(0,198,240,.4); outline: none;
+}
+.pickup-time-card__note {
+  font-size: .82rem; color: var(--muted); line-height: 1.6;
+}
+.pickup-time-card__note strong { color: var(--text); }
+
 /* ── 14. OPTIONS DE PAIEMENT ────────────────────────────────────── */
 .pay-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
 .pay-card {
