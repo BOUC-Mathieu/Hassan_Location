@@ -337,7 +337,7 @@ img { max-width: 100%; display: block; }
 .sec__sub { font-size: 1rem; color: var(--muted); max-width: 540px; margin: 0 auto; }
 
 /* ── 9. AVANTAGES ───────────────────────────────────────────────── */
-.av-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 20px; align-items: start; }
+.av-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 20px; }
 .av-card {
   background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r-lg);
   padding: 28px 24px; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
