@@ -50,3 +50,15 @@ CREATE INDEX IF NOT EXISTS idx_res_dates   ON reservations(start_date, end_date)
 CREATE INDEX IF NOT EXISTS idx_res_status  ON reservations(status);
 CREATE INDEX IF NOT EXISTS idx_res_session ON reservations(stripe_session_id);
 CREATE INDEX IF NOT EXISTS idx_res_intent  ON reservations(stripe_payment_intent);
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Administration du planning (/planning-admin) — ajouté ultérieurement
+-- Une ligne = une date bloquée manuellement par l'administrateur,
+-- indépendamment de toute réservation Stripe.
+-- ═══════════════════════════════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS manual_blocks (
+  date       TEXT PRIMARY KEY,   -- YYYY-MM-DD
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_manual_blocks_date ON manual_blocks(date);

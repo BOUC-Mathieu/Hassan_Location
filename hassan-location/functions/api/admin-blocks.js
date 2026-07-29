@@ -39,28 +39,40 @@ export async function onRequestGet({ request, env }) {
   }
 
   try {
-    const [resRow, blockRow] = await Promise.all([
-      env.DB.prepare(`
-        SELECT id, start_date, end_date, pickup_time, status, client_email, amount_paid, payment_option, created_at
-        FROM   reservations
-        WHERE  status IN ('paid', 'validated')
-        ORDER  BY start_date ASC
-      `).all(),
-      env.DB.prepare(`SELECT date FROM manual_blocks ORDER BY date ASC`).all(),
-    ]);
+    const resRow = await env.DB.prepare(`
+      SELECT id, start_date, end_date, pickup_time, status, client_email, amount_paid, payment_option, created_at
+      FROM   reservations
+      WHERE  status IN ('paid', 'validated')
+      ORDER  BY start_date ASC
+    `).all();
+
+    // ─── Blocages manuels ────────────────────────────────────────────
+    // Requête isolée dans son propre try/catch (même logique défensive
+    // que /api/availability) : si la table manual_blocks n'existe pas
+    // encore côté D1 distant (migration_admin.sql non appliquée), le
+    // planning admin continue quand même de charger les réservations
+    // Stripe et de permettre leur annulation, au lieu d'échouer
+    // entièrement avec une erreur 500 qui bloquait toute la page.
+    let manualBlocks = [];
+    try {
+      const blockRow = await env.DB.prepare(`SELECT date FROM manual_blocks ORDER BY date ASC`).all();
+      manualBlocks = blockRow.results.map((r) => r.date);
+    } catch (manualErr) {
+      console.warn(
+        '[admin-blocks] manual_blocks indisponible — le blocage manuel restera désactivé tant que ' +
+        'la migration n\'est pas appliquée : wrangler d1 execute hassan-location-db --file=functions/api/migration_admin.sql --remote',
+        manualErr.message
+      );
+    }
 
     return Response.json({
       ok: true,
       reservations: resRow.results,
-      manualBlocks: blockRow.results.map((r) => r.date),
+      manualBlocks,
     }, { headers: JSON_HEADERS });
 
   } catch (err) {
-    console.error(
-      '[admin-blocks] GET D1 error:', err.message,
-      '— si le message contient "no such table: manual_blocks", exécutez la migration : ' +
-      'wrangler d1 execute hassan-location-db --file=migration_admin.sql --remote'
-    );
+    console.error('[admin-blocks] GET D1 error:', err.message);
     return Response.json({ ok: false, error: 'Erreur serveur' }, { status: 500, headers: JSON_HEADERS });
   }
 }
@@ -121,7 +133,7 @@ export async function onRequestPost({ request, env }) {
     console.error(
       '[admin-blocks] POST D1 error:', err.message,
       '— si le message contient "no such table: manual_blocks", exécutez la migration : ' +
-      'wrangler d1 execute hassan-location-db --file=migration_admin.sql --remote'
+      'wrangler d1 execute hassan-location-db --file=functions/api/migration_admin.sql --remote'
     );
     return Response.json({ ok: false, error: 'Erreur serveur' }, { status: 500, headers: JSON_HEADERS });
   }
