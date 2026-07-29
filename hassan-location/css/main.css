@@ -878,6 +878,10 @@ img { max-width: 100%; display: block; }
   .cgv-toc__grid { grid-template-columns: 1fr; }
   .cgv-toc { padding: 18px 18px; }
   .confirm-card { padding: 36px 22px; }
+  .confirm-card .btn { white-space: normal; text-align: center; line-height: 1.35; }
+  .confirm-step { align-items: flex-start; }
+  .confirm-step .cs-num { margin-top: 1px; }
+  .confirm-essentials { padding: 14px 16px; }
   .wa-fab { bottom: 16px; right: 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
