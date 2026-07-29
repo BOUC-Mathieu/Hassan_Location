@@ -19,6 +19,10 @@ CREATE TABLE IF NOT EXISTS reservations (
   end_date               TEXT NOT NULL,
   days                   INTEGER NOT NULL CHECK(days > 0),
 
+  -- Heure de prise en charge souhaitée (format HH:MM, ex. "09:00").
+  -- La restitution est prévue à la même heure, le jour de end_date.
+  pickup_time            TEXT NOT NULL DEFAULT '09:00',
+
   -- Tarification (en euros entiers pour éviter les flottants)
   rate_per_day           INTEGER NOT NULL,
   total_amount           INTEGER NOT NULL,

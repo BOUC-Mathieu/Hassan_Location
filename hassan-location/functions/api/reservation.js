@@ -80,6 +80,7 @@ export async function onRequestGet({ request, env }) {
         start_date:           m.start_date,
         end_date:             m.end_date,
         days:                 parseInt(m.days, 10),
+        pickup_time:          m.pickup_time || '09:00',
         rate_per_day:         parseInt(m.rate_per_day, 10),
         total_amount:         parseInt(m.total_amount, 10),
         deposit_amount:       parseInt(m.deposit_amount, 10),

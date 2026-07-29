@@ -304,14 +304,20 @@ const PAGE_HTML = `<!DOCTYPE html>
       var d = new Date(y,m,day);
       var past = d < today;
       var cls = 'day';
+      var title = '';
       if (past){
         cls += ' past';
       } else {
         var base = baseStatus(iso);
         cls += ' ' + base;
         if (isPending(iso, base)) cls += ' pending';
+        if (base === 'stripe'){
+          var rr = findStripeReservation(iso);
+          if (rr) title = 'Réservation ' + rr.id + '\nDu ' + rr.start_date + ' au ' + rr.end_date +
+            '\nPrise en charge : ' + (rr.pickup_time || '09:00');
+        }
       }
-      html += '<span class="' + cls + '" data-date="' + iso + '">' + day + '</span>';
+      html += '<span class="' + cls + '" data-date="' + iso + '"' + (title ? ' title="' + title.replace(/"/g,'&quot;') + '"' : '') + '>' + day + '</span>';
     }
     elDays.innerHTML = html;
 

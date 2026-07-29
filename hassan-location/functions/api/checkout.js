@@ -18,8 +18,8 @@
 function calcAmounts(days, paymentOption) {
   let pricePerDay;
   let label;
-  if (days >= 8) { pricePerDay = 150; label = 'Tarif longue durée'; }
-  else if (days >= 4) { pricePerDay = 165; label = 'Tarif semaine'; }
+  if (days >= 8) { pricePerDay = 160; label = 'Tarif longue durée'; }
+  else if (days >= 4) { pricePerDay = 170; label = 'Tarif semaine'; }
   else { pricePerDay = 180; label = 'Tarif standard'; }
 
   const total   = days * pricePerDay;
@@ -84,7 +84,7 @@ export async function onRequestPost({ request, env }) {
   try { payload = await request.json(); }
   catch { return Response.json({ error: 'Corps JSON invalide' }, { status: 400, headers: h }); }
 
-  const { startDate, endDate, paymentOption } = payload;
+  const { startDate, endDate, paymentOption, pickupTime } = payload;
 
   /* 2. Validation des champs */
   if (!startDate || !endDate || !paymentOption) {
@@ -99,6 +99,12 @@ export async function onRequestPost({ request, env }) {
       { status: 400, headers: h }
     );
   }
+
+  /* 2bis. Validation de l'heure de prise en charge (06:00 → 16:00, pile) */
+  const PICKUP_TIME_RE = /^(0[6-9]|1[0-6]):00$/;
+  const safePickupTime = (typeof pickupTime === 'string' && PICKUP_TIME_RE.test(pickupTime))
+    ? pickupTime
+    : '09:00'; // valeur par défaut si absente ou invalide
 
   /* 3. Validation des dates */
   const today  = new Date(); today.setHours(0, 0, 0, 0);
@@ -168,7 +174,7 @@ export async function onRequestPost({ request, env }) {
   }
 
   const siteUrl = env.SITE_URL || 'https://hassan-location.pages.dev';
-  const description = `${days} jour(s) · Du ${startDate} au ${endDate} · ${label} · ${
+  const description = `${days} jour(s) · Du ${startDate} au ${endDate} · Prise en charge à ${safePickupTime} · ${label} · ${
     paymentOption === 'deposit' ? `Acompte 30% (${deposit}€)` : `Paiement intégral (${total}€)`
   }`;
 
@@ -176,6 +182,7 @@ export async function onRequestPost({ request, env }) {
     start_date:      startDate,
     end_date:        endDate,
     days:            days,
+    pickup_time:     safePickupTime,
     rate_per_day:    pricePerDay,
     total_amount:    total,
     deposit_amount:  deposit,

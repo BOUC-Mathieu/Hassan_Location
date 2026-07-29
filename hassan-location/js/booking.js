@@ -9,7 +9,8 @@
     currentStep: 1, startDate: null, endDate: null,
     days: 0, rate: 0, total: 0, deposit: 0,
     rateTag: '', discount: '', payOption: null,
-    calMonth: null, blockedRanges: [], consent: false
+    calMonth: null, blockedRanges: [], consent: false,
+    pickupTime: '09:00'
   };
 
   /* ── Case à cocher CGV / Contrat de location (obligatoire) ── */
@@ -22,8 +23,8 @@
   function getRate(d) {
     var c = window.SITE_CONFIG;
     if (c) return c.getRate(d);
-    if (d >= 8) return { pricePerDay: 150, label: 'Tarif longue durée', discount: '-17%' };
-    if (d >= 4) return { pricePerDay: 165, label: 'Tarif semaine',      discount: '-8%' };
+    if (d >= 8) return { pricePerDay: 160, label: 'Tarif longue durée', discount: '-11%' };
+    if (d >= 4) return { pricePerDay: 170, label: 'Tarif semaine',      discount: '-6%' };
     return              { pricePerDay: 180, label: 'Tarif standard',     discount: '' };
   }
 
@@ -165,11 +166,15 @@
   function updateSummary() {
     var sum  = document.getElementById('cal-summary');
     var btn  = document.getElementById('bk-btn-next-1');
+    var ptc  = document.getElementById('pickup-time-card');
     if (!sum) return;
     if (!state.startDate || !state.endDate || state.days < 1) {
-      sum.classList.remove('visible'); if (btn) btn.disabled = true; return;
+      sum.classList.remove('visible'); if (btn) btn.disabled = true;
+      if (ptc) ptc.classList.remove('visible');
+      return;
     }
     sum.classList.add('visible');
+    if (ptc) ptc.classList.add('visible');
     var q = function(id){ return sum.querySelector('#' + id); };
     if (q('cs-dates')) q('cs-dates').textContent = fmtDate(state.startDate) + ' → ' + fmtDate(state.endDate);
     if (q('cs-days'))  q('cs-days').textContent  = state.days + ' jour(s)';
@@ -177,6 +182,8 @@
     var b = q('cs-badge');
     if (b) { if (state.discount){ b.textContent = state.discount; b.style.display = ''; } else b.style.display = 'none'; }
     if (q('cs-total')) q('cs-total').textContent = state.total.toLocaleString('fr-FR') + '€';
+    var rd = document.getElementById('pickup-time-return-date');
+    if (rd) rd.textContent = fmtDate(state.endDate);
     if (btn) btn.disabled = false;
   }
 
@@ -203,6 +210,7 @@
         ? 'Acompte 30% = <strong>' + state.deposit.toLocaleString('fr-FR') + '€</strong> · Solde ' + (state.total - state.deposit).toLocaleString('fr-FR') + '€ à la prise en charge'
         : 'Paiement intégral = <strong>' + state.total.toLocaleString('fr-FR') + '€</strong>';
       recap.innerHTML = '📅 Du ' + fmtDate(state.startDate) + ' au ' + fmtDate(state.endDate) +
+        '<br>🕐 Prise en charge à ' + state.pickupTime.replace(':', 'h') + ' · Restitution à la même heure' +
         '<br>⏱ ' + state.days + ' j × ' + state.rate + '€' +
         (state.discount ? ' <span class="badge-discount">' + state.discount + '</span>' : '') +
         '<br>💳 ' + lbl;
@@ -230,7 +238,8 @@
         body: JSON.stringify({
           startDate:     toISO(state.startDate),
           endDate:       toISO(state.endDate),
-          paymentOption: state.payOption
+          paymentOption: state.payOption,
+          pickupTime:    state.pickupTime
         })
       });
       var data = await res.json();
@@ -242,7 +251,8 @@
       try {
         sessionStorage.setItem('hl_pending', JSON.stringify({
           startDate: toISO(state.startDate), endDate: toISO(state.endDate),
-          days: state.days, total: state.total, option: state.payOption, ts: Date.now()
+          days: state.days, total: state.total, option: state.payOption,
+          pickupTime: state.pickupTime, ts: Date.now()
         }));
       } catch(e){}
       window.location.href = data.url;
@@ -262,12 +272,14 @@
     ov.classList.add('open');
     document.body.style.overflow = 'hidden';
     var today = new Date(); today.setDate(1);
-    state.calMonth = today; state.startDate = null; state.endDate = null; state.payOption = null; state.consent = false;
+    state.calMonth = today; state.startDate = null; state.endDate = null; state.payOption = null; state.consent = false; state.pickupTime = '09:00';
     loadBlockedDates();
     showPanel(1);
     var bn = document.getElementById('bk-btn-next-1'); if(bn) bn.disabled = true;
     var rc = document.getElementById('pay-recap'); if(rc) rc.classList.remove('visible');
     var sm = document.getElementById('cal-summary'); if(sm) sm.classList.remove('visible');
+    var pt = document.getElementById('pickup-time-card'); if(pt) pt.classList.remove('visible');
+    var pts = document.getElementById('pickup-time-select'); if(pts) pts.value = '09:00';
     var cc = document.getElementById('consent-cgv'); if(cc) cc.checked = false;
     var cw = document.getElementById('consent-check-wrap'); if(cw) cw.classList.remove('error');
     var ce = document.getElementById('consent-error-msg'); if(ce) ce.classList.remove('visible');
@@ -295,6 +307,8 @@
     if (bn1) { bn1.disabled=true; bn1.addEventListener('click', function(){ if(!state.startDate||!state.endDate||state.days<1) return; initPay(); showPanel(2); }); }
     var bp = document.getElementById('bk-btn-pay');
     if (bp) { bp.disabled=true; bp.addEventListener('click', goToStripe); }
+    var pts = document.getElementById('pickup-time-select');
+    if (pts) { pts.addEventListener('change', function(){ state.pickupTime = pts.value; }); }
     var cc = document.getElementById('consent-cgv');
     if (cc) {
       cc.addEventListener('change', function () {

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Hassan Location – Location camion frigorifique à La Réunion. 180€/jour. Hayon électrique. Température maîtrisée. Réservation en ligne.">
+<meta name="description" content="Hassan Location – Location camion frigorifique à La Réunion. 180€ TTC/jour. Hayon électrique. Température maîtrisée. Réservation en ligne.">
 <title>Hassan Location · Camion Frigorifique – La Réunion</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,6 +46,42 @@
 .hero__bg-photo {
   background-image:    url('assets/images/hero.webp');
   background-position: center 22%;
+}
+
+/* ── Accordéon av-card ─────────────────────────────── */
+.av-card { cursor: pointer; }
+.av-card__header {
+  display: flex; align-items: center; gap: 14px;
+}
+.av-card__header .av-card__icon { margin-bottom: 0; flex-shrink: 0; }
+.av-card__header .av-card__name { margin-bottom: 0; flex: 1; }
+.av-card__chevron {
+  color: var(--cold); font-size: .85rem; flex-shrink: 0;
+  transition: transform .32s ease;
+  margin-left: auto;
+}
+.av-card.is-open .av-card__chevron { transform: rotate(180deg); }
+.av-card__text {
+  max-height: 0; overflow: hidden; opacity: 0; margin: 0;
+  transition: max-height .35s ease, opacity .3s ease, margin .3s ease;
+}
+.av-card.is-open .av-card__text {
+  max-height: 200px; opacity: 1; margin-top: 14px;
+}
+.av-card:hover { border-color: rgba(0,198,240,.45); }
+
+/* ── Hero : image complète sur mobile portrait ─────── */
+@media (max-width: 640px) and (orientation: portrait) {
+  .hero__bg-photo {
+    background-size: 100% auto;
+    background-position: center top;
+  }
+}
+@media (max-width: 640px) and (orientation: landscape) {
+  .hero__bg-photo {
+    background-size: cover;
+    background-position: center 30%;
+  }
 }
 </style>
 </head>
@@ -106,7 +142,7 @@
         </a>
       </div>
       <div class="hero__kpis">
-        <div class="hero__kpi"><strong>180€</strong><span>par jour</span></div>
+        <div class="hero__kpi"><strong>180€ TTC</strong><span>par jour</span></div>
         <div class="hero__kpi"><strong>-20°C</strong><span>à +4°C</span></div>
         <div class="hero__kpi"><strong>24h</strong><span>Réponse rapide</span></div>
       </div>
@@ -136,23 +172,35 @@
     </div>
     <div class="av-grid">
       <div class="av-card reveal d1">
-        <div class="av-card__icon">❄️</div>
-        <div class="av-card__name">Température maîtrisée</div>
+        <div class="av-card__header">
+          <div class="av-card__icon">❄️</div>
+          <div class="av-card__name">Température maîtrisée</div>
+          <span class="av-card__chevron">&#9660;</span>
+        </div>
         <p class="av-card__text">Maintien garanti de -20°C à +4°C grâce à une unité frigorifique puissante et régulièrement entretenue. Vos produits arrivent dans un état parfait.</p>
       </div>
       <div class="av-card reveal d2">
-        <div class="av-card__icon">⚡</div>
-        <div class="av-card__name">Hayon électrique</div>
+        <div class="av-card__header">
+          <div class="av-card__icon">⚡</div>
+          <div class="av-card__name">Hayon électrique</div>
+          <span class="av-card__chevron">&#9660;</span>
+        </div>
         <p class="av-card__text">Chargement et déchargement facilités par un hayon à commande électrique. Idéal pour les livraisons sans quai de déchargement.</p>
       </div>
       <div class="av-card reveal d3">
-        <div class="av-card__icon">🛡️</div>
-        <div class="av-card__name">Fiabilité garantie</div>
+        <div class="av-card__header">
+          <div class="av-card__icon">🛡️</div>
+          <div class="av-card__name">Fiabilité garantie</div>
+          <span class="av-card__chevron">&#9660;</span>
+        </div>
         <p class="av-card__text">Véhicule entretenu et contrôlé avant chaque location. Assistance disponible en cas d'imprévu. Vous n'êtes jamais seul sur la route.</p>
       </div>
       <div class="av-card reveal d4">
-        <div class="av-card__icon">💳</div>
-        <div class="av-card__name">Paiement flexible</div>
+        <div class="av-card__header">
+          <div class="av-card__icon">💳</div>
+          <div class="av-card__name">Paiement flexible</div>
+          <span class="av-card__chevron">&#9660;</span>
+        </div>
         <p class="av-card__text">Acompte de 30% à la réservation, solde à la prise en charge. Paiement en 3 ou 4 fois sans frais possible sur demande.</p>
       </div>
     </div>
@@ -184,11 +232,11 @@
           <div class="spec"><div class="spec__ic">👥</div>Professionnels &amp; particuliers</div>
         </div>
         <div class="product-price-row">
-          <div class="price-big">180€</div>
+          <div class="price-big">180€ TTC</div>
           <div class="price-unit">/ jour</div>
           <div class="price-note">
             Tarif dégressif<br>
-            4–7 j : 165€/j · 8j+ : 150€/j<br>
+            4–7 j : 170€ TTC/j · 8j+ : 160€ TTC/j<br>
             Payable en 3/4× sans frais
           </div>
         </div>
@@ -211,18 +259,18 @@
     <p class="cta-booking__sub">Choisissez vos dates, réglez en ligne, et recevez votre contrat à signer. Simple, rapide, sécurisé.</p>
     <div class="cta-booking__prices">
       <div class="cta-price">
-        <strong>180€</strong>
+        <strong>180€ TTC</strong>
         <span>1 à 3 jours</span>
       </div>
       <div class="cta-price">
-        <strong>165€</strong>
+        <strong>170€ TTC</strong>
         <span>4 à 7 jours</span>
-        <span class="badge-green">-8%</span>
+        <span class="badge-green">-6%</span>
       </div>
       <div class="cta-price">
-        <strong>150€</strong>
+        <strong>160€ TTC</strong>
         <span>8 jours et +</span>
-        <span class="badge-green">-17%</span>
+        <span class="badge-green">-11%</span>
       </div>
     </div>
     <button class="btn btn-cold btn-lg" data-open-booking>
@@ -319,6 +367,29 @@
             <span class="val" id="cs-total">—</span>
           </div>
         </div>
+
+        <!-- Heure de prise en charge -->
+        <div class="pickup-time-card" id="pickup-time-card">
+          <label for="pickup-time-select" class="pickup-time-card__label">Heure de prise en charge souhaitée</label>
+          <select id="pickup-time-select" class="pickup-time-card__select">
+            <option value="06:00">06h00</option>
+            <option value="07:00">07h00</option>
+            <option value="08:00">08h00</option>
+            <option value="09:00" selected>09h00</option>
+            <option value="10:00">10h00</option>
+            <option value="11:00">11h00</option>
+            <option value="12:00">12h00</option>
+            <option value="13:00">13h00</option>
+            <option value="14:00">14h00</option>
+            <option value="15:00">15h00</option>
+            <option value="16:00">16h00</option>
+          </select>
+          <p class="pickup-time-card__note">
+            Restitution prévue à la <strong>même heure</strong> le <span id="pickup-time-return-date">—</span>.
+            Merci d'arriver de préférence <strong>en avance</strong> au rendez-vous : le temps de compléter le contrat
+            sur place peut légèrement décaler l'heure exacte de départ, sans jamais changer la durée totale de votre location.
+          </p>
+        </div>
       </div>
 
       <button class="btn btn-cold btn-full" id="bk-btn-next-1" disabled>
@@ -389,5 +460,17 @@
 <script src="js/config.js"></script>
 <script src="js/booking.js"></script>
 <script src="js/main.js"></script>
+<script>
+/* Accordéon cartes avantages */
+document.querySelectorAll('.av-card').forEach(function(card) {
+  card.addEventListener('click', function() {
+    var wasOpen = card.classList.contains('is-open');
+    document.querySelectorAll('.av-card').forEach(function(c) {
+      c.classList.remove('is-open');
+    });
+    if (!wasOpen) card.classList.add('is-open');
+  });
+});
+</script>
 </body>
 </html>

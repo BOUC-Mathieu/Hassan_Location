@@ -37,7 +37,7 @@
     <div id="state-success" style="display:none;">
       <div class="confirm-icon">✓</div>
       <h1 class="confirm-title">Paiement confirmé !</h1>
-      <p class="confirm-sub">Merci pour votre réservation. Votre demande a bien été enregistrée.</p>
+      <p class="confirm-sub">Merci pour votre réservation. Voici comment se déroule la suite.</p>
       <p class="confirm-ref">Référence : <span id="res-id">—</span></p>
 
       <div class="confirm-steps" id="res-recap" style="margin-bottom:24px;">
@@ -46,40 +46,58 @@
           <span id="res-dates">—</span>
         </div>
         <div class="confirm-step">
+          <div class="cs-num">🕐</div>
+          <span id="res-time">—</span>
+        </div>
+        <div class="confirm-step">
           <div class="cs-num">💰</div>
           <span id="res-amount">—</span>
         </div>
       </div>
 
-      <div class="confirm-steps" style="margin-bottom:28px;">
+      <p style="font-family:var(--font-head);font-weight:700;color:var(--white);font-size:.92rem;margin-bottom:12px;">Que se passe-t-il maintenant ?</p>
+      <div class="confirm-steps" style="margin-bottom:20px;">
         <div class="confirm-step">
           <div class="cs-num">1</div>
           <div>
-            <span>Signez le contrat de location</span><br>
-            <small style="color:var(--muted);font-size:.78rem;">Obligatoire — réservation <em>en attente</em> jusqu'à réception</small>
+            <span>Rendez-vous le jour J, à l'heure convenue</span><br>
+            <small style="color:var(--muted);font-size:.78rem;">Mieux vaut arriver un peu en avance : voir la remarque ci-dessus sur l'heure de prise en charge</small>
           </div>
         </div>
         <div class="confirm-step">
           <div class="cs-num">2</div>
           <div>
-            <span>Envoyez-le par WhatsApp ou email</span><br>
-            <small style="color:var(--muted);font-size:.78rem;">Avec permis de conduire et pièce d'identité</small>
+            <span>Le contrat est rempli et signé sur place</span><br>
+            <small style="color:var(--muted);font-size:.78rem;">Directement avec le loueur, avant la remise des clés — aucune signature à distance</small>
           </div>
         </div>
         <div class="confirm-step">
           <div class="cs-num">3</div>
           <div>
-            <span>Validation par Hassan Location</span><br>
-            <small style="color:var(--muted);font-size:.78rem;">Confirmation définitive sous 24h ouvrées</small>
+            <span>Vous repartez avec le véhicule</span><br>
+            <small style="color:var(--muted);font-size:.78rem;">Un état des lieux de départ est réalisé avant la prise en charge</small>
           </div>
         </div>
       </div>
 
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        <a href="contrat.html" class="btn btn-cold btn-full btn-lg">Accéder au contrat de location →</a>
+      <div class="confirm-essentials">
+        <p class="confirm-essentials__title">📋 À prévoir le jour J</p>
+        <ul>
+          <li>Permis de conduire <strong>valide</strong>, obtenu depuis <strong>3 ans minimum</strong></li>
+          <li>Pièce d'identité en cours de validité</li>
+          <li>Conducteur âgé de <strong>22 ans minimum</strong></li>
+          <li>Dépôt de garantie de 1 500 € (empreinte bancaire, chèque ou virement)</li>
+        </ul>
+        <a href="cgv.html" style="color:var(--cold);text-decoration:underline;font-size:.78rem;">Voir le détail complet dans les CGV →</a>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:24px;">
+        <a href="contrat.html" class="btn btn-cold btn-full btn-lg">Voir un exemplaire du contrat (vierge) →</a>
         <a href="index.html"   class="btn btn-outline-white btn-full">Retour à l'accueil</a>
       </div>
       <p style="font-size:.76rem;color:rgba(185,225,255,.4);margin-top:16px;">
+        Une question ? <a href="tel:0693397792" style="color:var(--cold);">0693 39 77 92</a>
+        · <a href="mailto:lallemandjoan150@gmail.com" style="color:var(--cold);">lallemandjoan150@gmail.com</a><br>
         Cette réservation est régie par nos <a href="cgv.html" style="color:var(--cold);text-decoration:underline;">Conditions Générales de Vente</a>.
       </p>
     </div>
@@ -132,6 +150,13 @@
     if (dEl) dEl.textContent = 'Du ' + fmt(r.start_date) + ' au ' + fmt(r.end_date) +
       ' (' + r.days + ' jour' + (r.days > 1 ? 's' : '') + ')';
 
+    var tEl = document.getElementById('res-time');
+    if (tEl) {
+      var pt = (r.pickup_time || '09:00').replace(':', 'h');
+      tEl.textContent = 'Prise en charge à ' + pt + ' · Restitution prévue à la même heure, le ' + fmt(r.end_date) +
+        ' (l\'heure exacte peut légèrement varier selon le temps nécessaire sur place, sans changer la durée totale)';
+    }
+
     var aEl = document.getElementById('res-amount');
     if (aEl) {
       var payLabel = r.payment_option === 'deposit'
@@ -139,9 +164,6 @@
         : 'Paiement intégral : ' + r.amount_paid + '€';
       aEl.textContent = payLabel;
     }
-
-    // Stocker pour la page contrat
-    localStorage.setItem('hl_last_reservation', JSON.stringify(r));
   }
 
   function showError() {
@@ -154,7 +176,7 @@
       // Pas de session_id : chercher en sessionStorage (retour imprévu)
       try {
         var raw = sessionStorage.getItem('hl_pending');
-        if (raw) { var d = JSON.parse(raw); showSuccess({ start_date:d.startDate, end_date:d.endDate, days:d.days, total_amount:d.total, amount_paid:d.total, payment_option:d.option, id:null }); return; }
+        if (raw) { var d = JSON.parse(raw); showSuccess({ start_date:d.startDate, end_date:d.endDate, days:d.days, pickup_time:d.pickupTime, total_amount:d.total, amount_paid:d.total, payment_option:d.option, id:null }); return; }
       } catch(e) {}
       showError(); return;
     }
@@ -179,7 +201,7 @@
         setTimeout(attempt, DELAY);
       } else {
         // Dernière tentative échouée : afficher quand même le succès avec info minimale
-        showSuccess({ start_date: '?', end_date: '?', days: 0, total_amount: 0, amount_paid: 0, payment_option: 'full', id: null });
+        showSuccess({ start_date: '?', end_date: '?', days: 0, pickup_time: '09:00', total_amount: 0, amount_paid: 0, payment_option: 'full', id: null });
       }
     }
 

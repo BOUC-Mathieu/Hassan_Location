@@ -28,8 +28,8 @@ window.SITE_CONFIG = (function () {
   /* répercutée dans les deux fichiers.                           */
   var RATES = [
     { minDays: 1, maxDays: 3,        pricePerDay: 180, label: 'Tarif standard',      discount: '' },
-    { minDays: 4, maxDays: 7,        pricePerDay: 165, label: 'Tarif semaine',        discount: '-8%' },
-    { minDays: 8, maxDays: Infinity, pricePerDay: 150, label: 'Tarif longue durée',   discount: '-17%' }
+    { minDays: 4, maxDays: 7,        pricePerDay: 170, label: 'Tarif semaine',        discount: '-6%' },
+    { minDays: 8, maxDays: Infinity, pricePerDay: 160, label: 'Tarif longue durée',   discount: '-11%' }
   ];
   var DEPOSIT_PERCENT = 30; // % de l'acompte
 

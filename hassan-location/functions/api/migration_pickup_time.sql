@@ -1,0 +1,21 @@
+-- ═══════════════════════════════════════════════════════════════════
+-- HASSAN LOCATION — migration_pickup_time.sql
+-- Ajoute la colonne "pickup_time" (heure de prise en charge souhaitée)
+-- à la table "reservations" existante. N'ALTÈRE ni ne supprime aucune
+-- donnée existante ; les réservations déjà en base reçoivent la
+-- valeur par défaut '09:00'.
+--
+-- ⚠️ À exécuter UNE SEULE FOIS, uniquement si la base de données existe
+-- déjà (déploiement déjà en production). Sur une base fraîchement
+-- créée avec schema.sql, cette colonne est déjà incluse — ne pas
+-- exécuter cette migration dans ce cas (elle échouerait avec
+-- "duplicate column name").
+--
+-- Appliquer sur la base distante :
+--   wrangler d1 execute hassan-location-db --file=functions/api/migration_pickup_time.sql --remote
+--
+-- Appliquer en local (dev) :
+--   wrangler d1 execute hassan-location-db --file=functions/api/migration_pickup_time.sql
+-- ═══════════════════════════════════════════════════════════════════
+
+ALTER TABLE reservations ADD COLUMN pickup_time TEXT NOT NULL DEFAULT '09:00';

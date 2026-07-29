@@ -103,22 +103,24 @@ export async function onRequestPost({ request, env }) {
 
         const { metadata } = session;
         const id = genId();
+        const pickupTime = (metadata && metadata.pickup_time) || '09:00';
 
         await env.DB.prepare(`
           INSERT INTO reservations
             (id, stripe_session_id, stripe_payment_intent,
-             start_date, end_date, days,
+             start_date, end_date, days, pickup_time,
              rate_per_day, total_amount, deposit_amount,
              payment_option, amount_paid,
              status, client_email, created_at, updated_at)
           VALUES
             (?, ?, ?,
-             ?, ?, ?,
+             ?, ?, ?, ?,
              ?, ?, ?,
              ?, ?,
              'paid', ?, ?, ?)
           ON CONFLICT(stripe_session_id) DO UPDATE SET
             stripe_payment_intent = excluded.stripe_payment_intent,
+            pickup_time = excluded.pickup_time,
             status     = 'paid',
             updated_at = excluded.updated_at
         `).bind(
@@ -128,6 +130,7 @@ export async function onRequestPost({ request, env }) {
           metadata.start_date,
           metadata.end_date,
           parseInt(metadata.days, 10),
+          pickupTime,
           parseInt(metadata.rate_per_day, 10),
           parseInt(metadata.total_amount, 10),
           parseInt(metadata.deposit_amount, 10),

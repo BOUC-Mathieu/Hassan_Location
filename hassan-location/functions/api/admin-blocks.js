@@ -41,7 +41,7 @@ export async function onRequestGet({ request, env }) {
   try {
     const [resRow, blockRow] = await Promise.all([
       env.DB.prepare(`
-        SELECT id, start_date, end_date, status, client_email, amount_paid, payment_option, created_at
+        SELECT id, start_date, end_date, pickup_time, status, client_email, amount_paid, payment_option, created_at
         FROM   reservations
         WHERE  status IN ('paid', 'validated')
         ORDER  BY start_date ASC
