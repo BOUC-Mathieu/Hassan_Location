@@ -42,33 +42,37 @@
     <div class="sec__label">Document officiel</div>
     <h1 class="sec__title">Contrat de location</h1>
     <p style="color:var(--muted);font-size:.92rem;margin-top:8px;">Hassan Location · Camion Frigorifique Renault Maxity · La Réunion</p>
-    <p style="color:rgba(185,225,255,.4);font-size:.78rem;margin-top:10px;">Ce contrat complète nos <a href="cgv.html" style="color:var(--cold);text-decoration:underline;">Conditions Générales de Vente</a>.</p>
   </div>
 
-  <!-- ════ ENCART — CONTRAT TYPE, TOUJOURS VIERGE ════ -->
-  <div class="contrat-alert" id="contrat-alert-template">
-    <span class="contrat-alert__icon">📄</span>
+  <!-- ════ ENCART AVERTISSEMENT ════ -->
+  <div class="contrat-alert">
+    <span class="contrat-alert__icon">⚠️</span>
     <div class="contrat-alert__title">
-      Ce contrat est un modèle vierge, fourni à titre informatif.
+      Votre réservation ne sera définitivement validée<br>
+      qu'après réception de votre contrat signé.
     </div>
     <p style="color:rgba(220,180,120,.9);font-size:.88rem;margin-bottom:12px;">
-      Aucune information personnelle n'y est renseignée. Le contrat de location est
-      <strong style="color:#ffb340;">obligatoirement rempli et signé sur place</strong>, le jour de la prise en charge
-      du véhicule, directement avec le loueur — jamais à distance.
+      Votre paiement a bien été enregistré. Cependant, votre réservation restera
+      <strong style="color:#ffb340;">EN ATTENTE</strong> tant que nous n'avons pas reçu votre contrat signé accompagné de vos documents.
     </p>
     <ul class="contrat-alert__steps">
-      <li>Consultez librement les conditions ci-dessous, à tout moment</li>
-      <li>Réservez et réglez votre location en ligne</li>
-      <li>Le jour J, présentez-vous au rendez-vous avec vos documents</li>
-      <li>Le contrat est complété et signé sur place avec le loueur</li>
+      <li>Lisez attentivement le contrat ci-dessous</li>
+      <li>Imprimez-le ou téléchargez-le en PDF</li>
+      <li>Signez-le avec la mention manuscrite requise</li>
+      <li>Envoyez-le avec votre permis de conduire et pièce d'identité</li>
     </ul>
     <div class="contrat-actions">
-      <a href="index.html#reservation" class="btn btn-cold">
-        Réserver maintenant →
+      <a id="wa-contract-btn" href="https://wa.me/262693397792" class="btn btn-wa" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z"/></svg>
+        Envoyer par WhatsApp
+      </a>
+      <a id="email-contract-btn" href="mailto:Lallemandjoan150@gmail.com?subject=Contrat%20de%20location%20signé" class="btn btn-email">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+        Envoyer par Email
       </a>
       <button class="btn btn-pdf" onclick="window.print()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-        Télécharger / Imprimer (exemplaire vierge)
+        Télécharger / Imprimer PDF
       </button>
     </div>
   </div>
@@ -79,21 +83,22 @@
     <!-- En-tête officiel -->
     <div style="text-align:center;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid rgba(0,198,240,.15);">
       <div style="font-family:var(--font-head);font-weight:900;font-size:1.4rem;color:var(--white);margin-bottom:6px;letter-spacing:-.01em;">CONTRAT DE LOCATION DE VÉHICULE FRIGORIFIQUE</div>
-      <div style="color:var(--cold);font-size:.85rem;font-weight:600;margin-top:6px;">Contrat N° : …………………………</div>
+      <div style="color:var(--cold);font-size:.85rem;font-weight:600;margin-top:6px;">Contrat N° : <span id="contrat-num">…………..</span></div>
     </div>
 
-    <!-- Ce contrat est un modèle vierge : aucune information de réservation n'y est insérée. -->
+    <!-- Infos réservation (remplies dynamiquement) -->
+    <div id="contrat-reservation-info" style="margin-bottom:24px;"></div>
 
     <!-- ARTICLE 1 -->
     <h3>1. Identification des parties</h3>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:8px;">
+    <div class="contrat-parties">
       <div style="background:rgba(0,198,240,.04);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
         <p style="color:var(--cold);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">LE LOUEUR</p>
         <p><strong style="color:var(--white);">Nom / Société :</strong> Hassan Location</p>
         <p><strong style="color:var(--white);">Adresse :</strong> 212 rue Jules Bertaut, appartement N°32</p>
         <p><strong style="color:var(--white);">SIREN :</strong> 100 002 716 R.C.S Saint-Pierre de la Réunion</p>
         <p><strong style="color:var(--white);">Téléphone :</strong> 0693 39 77 92</p>
-        <p><strong style="color:var(--white);">Email :</strong> lallemandjoan150@gmail.com</p>
+        <p><strong style="color:var(--white);">Email :</strong> Lallemandjoan150@gmail.com</p>
       </div>
       <div style="background:rgba(0,198,240,.04);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
         <p style="color:var(--cold);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">LE LOCATAIRE</p>
@@ -235,7 +240,7 @@
       Fait à : ______________________________ &nbsp;&nbsp; Le : ____ / ____ / ______
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:28px;padding-top:24px;border-top:1px solid rgba(0,198,240,.15);">
+    <div class="contrat-signatures">
       <div>
         <p style="color:var(--cold);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;">Signature du Loueur</p>
         <p style="color:var(--muted);font-size:.82rem;">Nom / Société : Hassan Location</p>
@@ -254,33 +259,29 @@
 
   </div><!-- fin .contrat-body -->
 
-  <!-- Rappel contact -->
-  <div style="text-align:center;margin-top:32px;padding:24px;background:rgba(0,198,240,.04);border:1px solid var(--border);border-radius:18px;" id="contrat-footer-reminder">
-    <p style="color:var(--orange);font-weight:700;margin-bottom:16px;" id="contrat-footer-reminder-text">💬 Une question sur ce contrat ou votre réservation ?</p>
-    <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:12px;" id="contrat-footer-reminder-actions">
+  <!-- Rappel actions en bas -->
+  <div style="text-align:center;margin-top:32px;padding:24px;background:rgba(0,198,240,.04);border:1px solid var(--border);border-radius:18px;">
+    <p style="color:var(--orange);font-weight:700;margin-bottom:16px;">📋 N'oubliez pas d'envoyer ce contrat signé !</p>
+    <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:12px;">
       <a id="wa-contract-btn2" href="https://wa.me/262693397792" class="btn btn-wa" target="_blank" rel="noopener">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z"/></svg>
         WhatsApp
       </a>
-      <a id="email-contract-btn2" href="mailto:lallemandjoan150@gmail.com?subject=Question%20contrat%20de%20location" class="btn btn-email">
+      <a id="email-contract-btn2" href="mailto:Lallemandjoan150@gmail.com?subject=Contrat%20de%20location%20signé" class="btn btn-email">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
         Email
       </a>
-      <a href="tel:0693397792" class="btn btn-outline-white">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 4h3.5l1.5 4-2 1.5a12 12 0 0 0 6.5 6.5l1.5-2 4 1.5V19a2 2 0 0 1-2 2C10 21 3 14 3 6a2 2 0 0 1 2-2z"/></svg>
-        0693 39 77 92
-      </a>
+      <button class="btn btn-pdf" onclick="window.print()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        PDF / Imprimer
+      </button>
     </div>
   </div>
 
 </main>
 
 <footer class="footer" style="padding:28px 22px;margin-top:60px;">
-  <div class="footer__links" style="margin-bottom:14px;">
-    <a href="index.html" class="footer__link">Accueil</a>
-    <a href="cgv.html" class="footer__link">CGV &amp; Mentions légales</a>
-  </div>
-  <div class="footer__copy" style="margin:0;">© 2025 Hassan Location · La Réunion (974) · lallemandjoan150@gmail.com</div>
+  <div class="footer__copy" style="margin:0;">© 2025 Hassan Location · La Réunion (974) · Lallemandjoan150@gmail.com</div>
 </footer>
 
 <a href="https://wa.me/262693397792" class="wa-fab" target="_blank" rel="noopener" aria-label="WhatsApp">
@@ -288,5 +289,90 @@
 </a>
 
 <script src="js/main.js"></script>
+<script>
+(function () {
+
+  /* ── Protection accès direct ──────────────────────────────────
+     La page contrat n'est accessible qu'après une réservation payée.
+     Si aucune donnée de réservation n'est disponible → retour accueil.
+  ──────────────────────────────────────────────────────────────── */
+  var raw = localStorage.getItem('hl_last_reservation');
+  if (!raw) {
+    window.location.replace('index.html');
+    return; // stop execution
+  }
+
+  /* ── Lecture et affichage des informations de réservation ──── */
+  try {
+    var res = JSON.parse(raw);
+
+    /* Compatibilité : la réservation vient de /api/reservation
+       Structure : { id, start_date, end_date, days, total_amount,
+                     amount_paid, payment_option, stripe_session_id, ... }
+    */
+    function fmtDate(s) {
+      if (!s || s === '?') return '—';
+      var d = new Date(s + 'T12:00:00');
+      if (isNaN(d.getTime())) return s;
+      return d.toLocaleDateString('fr-FR', {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+      });
+    }
+
+    /* Référence : utiliser id si disponible, sinon générer depuis stripe_session_id */
+    var refNum = res.id
+      || (res.stripe_session_id ? 'HL-' + res.stripe_session_id.slice(-6).toUpperCase() : 'HL-' + String(Date.now()).slice(-6));
+
+    /* Numéro de contrat en haut */
+    var contratNumEl = document.getElementById('contrat-num');
+    if (contratNumEl) contratNumEl.textContent = refNum;
+
+    /* Bloc récapitulatif */
+    var infoDiv = document.getElementById('contrat-reservation-info');
+    if (infoDiv) {
+      var totalAmount = res.total_amount || 0;
+      var amountPaid  = res.amount_paid  || 0;
+      var payOpt      = res.payment_option || 'full';
+
+      var paidLabel = payOpt === 'deposit'
+        ? 'Acompte 30% réglé : ' + amountPaid + '€ · Solde : ' + (totalAmount - amountPaid) + '€ à la remise des clés'
+        : 'Paiement intégral réglé : ' + totalAmount + '€';
+
+      infoDiv.innerHTML =
+        '<div style="background:rgba(34,211,102,.07);border:1px solid rgba(34,211,102,.2);border-radius:12px;padding:16px 18px;margin-bottom:4px;">' +
+        '<p style="color:var(--white);font-family:var(--font-head);font-weight:700;font-size:.9rem;margin-bottom:10px;">Réservation concernée par ce contrat :</p>' +
+        '<div class="contrat-info-row"><span class="ci-label">Référence :</span><span class="ci-val">' + refNum + '</span></div>' +
+        '<div class="contrat-info-row"><span class="ci-label">Dates :</span><span class="ci-val">Du ' + fmtDate(res.start_date) + ' au ' + fmtDate(res.end_date) + '</span></div>' +
+        '<div class="contrat-info-row"><span class="ci-label">Durée :</span><span class="ci-val">' + (res.days || '—') + ' jour' + ((res.days || 0) > 1 ? 's' : '') + '</span></div>' +
+        '<div class="contrat-info-row"><span class="ci-label">Montant total :</span><span class="ci-val">' + totalAmount + ' €</span></div>' +
+        '<div class="contrat-info-row"><span class="ci-label">Paiement :</span><span class="ci-val">' + paidLabel + '</span></div>' +
+        '</div>';
+    }
+
+    /* Mise à jour des liens WhatsApp avec le contexte de la réservation */
+    var waMsg = 'Bonjour Hassan Location,\n\nJe vous envoie mon contrat de location signé.\n\nRéférence : ' + refNum +
+      '\nDates : du ' + (res.start_date || '?') + ' au ' + (res.end_date || '?') +
+      '\n\nVeuillez trouver ci-joint le contrat signé et mes documents (permis de conduire + pièce d\'identité).';
+
+    var waHref = 'https://wa.me/262693397792?text=' + encodeURIComponent(waMsg);
+    document.querySelectorAll('[id^="wa-contract-btn"]').forEach(function(a) {
+      a.href = waHref;
+    });
+
+    /* Mise à jour des liens email avec sujet personnalisé */
+    var emailSubject = 'Contrat de location signé – Réf ' + refNum;
+    var emailBody    = 'Bonjour,\n\nVeuillez trouver en pièce jointe mon contrat de location signé.\n\nRéférence : ' + refNum + '\nDates : du ' + (res.start_date || '?') + ' au ' + (res.end_date || '?') + '\n\nCordialement.';
+    var emailHref    = 'mailto:Lallemandjoan150@gmail.com?subject=' + encodeURIComponent(emailSubject) + '&body=' + encodeURIComponent(emailBody);
+    document.querySelectorAll('[id^="email-contract-btn"]').forEach(function(a) {
+      a.href = emailHref;
+    });
+
+  } catch(e) {
+    /* En cas d'erreur de parsing, laisser la page s'afficher normalement */
+    console.warn('Hassan Location: impossible de lire les données de réservation', e);
+  }
+
+})();
+</script>
 </body>
 </html>
