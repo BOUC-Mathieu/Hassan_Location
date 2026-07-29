@@ -292,15 +292,13 @@
 <script>
 (function () {
 
-  /* ── Protection accès direct ──────────────────────────────────
-     La page contrat n'est accessible qu'après une réservation payée.
-     Si aucune donnée de réservation n'est disponible → retour accueil.
+  /* ── Enrichissement conditionnel ───────────────────────────────
+     Si une réservation est disponible en mémoire, on complète le
+     contrat avec ses informations. Sinon, la page reste affichée
+     telle quelle (contrat type) : aucune redirection automatique.
   ──────────────────────────────────────────────────────────────── */
   var raw = localStorage.getItem('hl_last_reservation');
-  if (!raw) {
-    window.location.replace('index.html');
-    return; // stop execution
-  }
+  if (!raw) return; // pas de données à injecter, on laisse la page s'afficher normalement
 
   /* ── Lecture et affichage des informations de réservation ──── */
   try {
