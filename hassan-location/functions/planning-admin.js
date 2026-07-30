@@ -317,15 +317,11 @@ const PAGE_HTML = `<!DOCTYPE html>
           var rr = findStripeReservation(iso);
           if (rr){
             timeLabel = rr.pickup_time || '09:00';
-            title = 'Réservation ' + rr.id + '\nDu ' + rr.start_date + ' au ' + rr.end_date +
-              '\nPrise en charge : ' + timeLabel;
+            title = 'Reservation ' + rr.id + ' - du ' + rr.start_date + ' au ' + rr.end_date + ' - prise en charge ' + timeLabel;
           }
         }
       }
-      html += '<span class="' + cls + '" data-date="' + iso + '"' + (title ? ' title="' + title.replace(/"/g,'&quot;') + '"' : '') + '>'
-            + day
-            + (timeLabel ? '<span class="daytime">' + timeLabel + '</span>' : '')
-            + '</span>';
+      html += '<span class="' + cls + '" data-date="' + iso + '"' + (title ? ' title="' + title.replace(/"/g,'&quot;') + '"' : '') + '>' + day + (timeLabel ? '<span class="daytime">' + timeLabel + '</span>' : '') + '</span>';
     }
     elDays.innerHTML = html;
 
