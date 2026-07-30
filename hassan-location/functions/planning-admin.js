@@ -84,10 +84,11 @@ const PAGE_HTML = `<!DOCTYPE html>
   .weekdays span{text-align:center; font-size:.7rem; color:var(--muted); font-weight:600}
   .days{display:grid; grid-template-columns:repeat(7,1fr); gap:4px}
   .day{
-    aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+    aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
     border-radius:9px; font-size:.85rem; cursor:pointer; user-select:none;
-    border:1px solid transparent; transition:transform .1s; position:relative;
+    border:1px solid transparent; transition:transform .1s; position:relative; gap:1px;
   }
+  .day .daytime{font-size:.5rem; font-weight:700; line-height:1; opacity:.9; letter-spacing:.2px}
   .day:active{transform:scale(.92)}
   .day.empty{visibility:hidden; cursor:default}
   .day.past{color:rgba(255,255,255,.2); cursor:default; background:rgba(255,255,255,.02)}
@@ -170,7 +171,7 @@ const PAGE_HTML = `<!DOCTYPE html>
     <div class="top">
       <div>
         <h1>📅 Planning — Hassan Location</h1>
-        <div class="sub">Vert = disponible · Rouge = réservation Stripe · Orange = blocage manuel</div>
+        <div class="sub">Vert = disponible · Rouge = réservation Stripe (heure de prise en charge affichée) · Orange = blocage manuel</div>
       </div>
       <button class="logout-btn" id="logout-btn">Déconnexion</button>
     </div>
@@ -305,6 +306,7 @@ const PAGE_HTML = `<!DOCTYPE html>
       var past = d < today;
       var cls = 'day';
       var title = '';
+      var timeLabel = '';
       if (past){
         cls += ' past';
       } else {
@@ -313,11 +315,17 @@ const PAGE_HTML = `<!DOCTYPE html>
         if (isPending(iso, base)) cls += ' pending';
         if (base === 'stripe'){
           var rr = findStripeReservation(iso);
-          if (rr) title = 'Réservation ' + rr.id + '\nDu ' + rr.start_date + ' au ' + rr.end_date +
-            '\nPrise en charge : ' + (rr.pickup_time || '09:00');
+          if (rr){
+            timeLabel = rr.pickup_time || '09:00';
+            title = 'Réservation ' + rr.id + '\nDu ' + rr.start_date + ' au ' + rr.end_date +
+              '\nPrise en charge : ' + timeLabel;
+          }
         }
       }
-      html += '<span class="' + cls + '" data-date="' + iso + '"' + (title ? ' title="' + title.replace(/"/g,'&quot;') + '"' : '') + '>' + day + '</span>';
+      html += '<span class="' + cls + '" data-date="' + iso + '"' + (title ? ' title="' + title.replace(/"/g,'&quot;') + '"' : '') + '>'
+            + day
+            + (timeLabel ? '<span class="daytime">' + timeLabel + '</span>' : '')
+            + '</span>';
     }
     elDays.innerHTML = html;
 
@@ -392,7 +400,7 @@ const PAGE_HTML = `<!DOCTYPE html>
     pendingCancellations.forEach(function(id){
       var r = state.reservations.find(function(x){ return x.id === id; });
       var label = r
-        ? 'Annulation réservation ' + id + ' (libère ' + r.start_date + ' → ' + r.end_date + ')'
+        ? 'Annulation réservation ' + id + ' (libère ' + r.start_date + ' → ' + r.end_date + ', prise en charge ' + (r.pickup_time || '09:00') + ')'
         : 'Annulation réservation ' + id;
       ops.push({ body:{action:'cancel-reservation', reservationId: id}, label: label });
     });
